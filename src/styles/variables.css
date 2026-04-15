@@ -1,0 +1,135 @@
+:root {
+  /* BRAND COLORS - Earthy Premium (Punchier) */
+  --color-primary: #6B7C67;    /* Deeper Forest Sage */
+  --color-secondary: #F5F1E9;  /* Richer Warm Cream */
+  --color-accent: #C1664C;     /* Vibrant Earthy Terracotta */
+  --color-text: #1A1A1A;       /* Stronger Charcoal */
+  --color-white: #FFFFFF;
+  --color-bg-light: #F9F4F0;   /* Warmer Light Background */
+
+  /* FONTS */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* SPACING - Refined (Tightened) */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;        /* Was 2rem */
+  --space-lg: 3rem;          /* Was 4rem */
+  --space-xl: 5rem;          /* Was 8rem */
+
+  /* ANIMATIONS */
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-normal: 0.3s;
+  --duration-slow: 0.6s;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-color: var(--color-bg-light);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* GLOBAL UTILITIES */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+  width: 100%;
+}
+
+.section-padding {
+  padding: var(--space-xl) 0;
+}
+
+.bg-pattern {
+  background-color: var(--color-bg-light);
+  background-image: radial-gradient(#6B7C67 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: 0 0;
+  opacity: 0.12; /* More visible but still subtle */
+}
+
+/* GLOBAL SECTION STYLES */
+.page-header {
+  padding: calc(var(--navbar-height) + var(--space-lg)) 0 var(--space-lg);
+  background: #6B7C67 !important; /* Sage */
+  color: #FFFFFF !important;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.page-header h1 {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  margin-bottom: var(--space-xs);
+  color: #FFFFFF !important;
+}
+
+.page-header p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  color: #FFFFFF !important;
+  opacity: 0.9;
+}
+
+/* CONTACT PAGE SPECIFICS */
+.contact-page-v2 {
+  background-color: var(--color-bg-light);
+  min-height: 100vh;
+}
+
+.contact-content {
+  color: #000000 !important;
+  position: relative;
+  z-index: 5;
+  margin-top: -40px;
+}
+
+.contact-info h2 {
+  font-size: 2.2rem;
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.info-item span {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #000000 !important;
+}
+
+.form-container {
+  background: #FFFFFF !important;
+  padding: var(--space-lg) !important;
+  border-radius: 40px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* GLOBAL FORM FORCING */
+.form-container label, 
+.form-container .label {
+  color: #000000 !important;
+  font-weight: 800 !important;
+  display: block !important;
+  opacity: 1 !important;
+  margin-bottom: 8px !important;
+}
+
+.form-container input, 
+.form-container select, 
+.form-container textarea {
+  color: #000000 !important;
+  background: #fcfcfc !important;
+  border: 1.5px solid #eee !important;
+  opacity: 1 !important;
+}

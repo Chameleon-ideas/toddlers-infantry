@@ -1,0 +1,118 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="/logo.png" alt="Toddler's Infantry Logo" class="footer-logo" />
+        <p>Premium newborn and baby care services dedicated to nurturing your child's growth and happiness.</p>
+      </div>
+      
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-contact">
+        <h3>Contact Info</h3>
+        <p>Email: care@toddlersinfantry.com</p>
+        <p>Phone: (555) 123-4567</p>
+        <p>Location: Alberta, Canada</p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; {currentYear} Toddler's Infantry. All rights reserved. <br/> Designed and Developed by <a href="https://chameleon-ideas.com" target="_blank" rel="noopener noreferrer">Chameleon Ideas Inc.</a></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    background: var(--color-secondary);
+    padding: var(--space-xl) 0 var(--space-md);
+    margin-top: var(--space-xl);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-xl);
+  }
+
+  .footer-logo {
+    height: 60px;
+    width: auto;
+    margin-bottom: var(--space-md);
+  }
+
+  .footer-brand p {
+    max-width: 300px;
+    color: #666;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: var(--space-md);
+    color: var(--color-text);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul li {
+    margin-bottom: var(--space-sm);
+  }
+
+  ul li a {
+    text-decoration: none;
+    color: #666;
+    transition: color 0.3s ease;
+  }
+
+  ul li a:hover {
+    color: var(--color-primary);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: var(--space-md);
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .footer-bottom a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .footer-bottom a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+  }
+</style>

@@ -1,0 +1,232 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ContactForm from '../components/ContactForm';
+---
+
+<Layout title="Book an Appointment | Toddler's Infantry">
+  <Navbar />
+  
+  <main class="contact-ultra-fix">
+    <section class="mega-hero">
+      <div class="container">
+        <h1>Get in Touch</h1>
+        <p>Ready to start your journey with Toddler's Infantry? Fill out the form below to request an appointment or inquiry.</p>
+      </div>
+    </section>
+
+    <section class="content-body">
+      <div class="container">
+        <div class="split-grid">
+          <div class="details-pane">
+            <h2>Contact Details</h2>
+            <p className="subtext">If you have urgent questions, feel free to reach out directly via email or phone.</p>
+            
+            <div class="contact-items">
+              <div class="item">
+                <span class="label">Email</span>
+                <span class="value">care@toddlersinfantry.com</span>
+              </div>
+              <div class="item">
+                <span class="label">Phone</span>
+                <span class="value">(555) 123-4567</span>
+              </div>
+              <div class="item">
+                <span class="label">Location</span>
+                <span class="value">Alberta, Canada</span>
+              </div>
+            </div>
+
+            <div class="booking-notice">
+              <h4>Note on Payments</h4>
+              <p>Appointments require a <strong>$25 booking fee</strong>. Details for offline payment will be sent upon form submission by Kareen Barrett.</p>
+            </div>
+          </div>
+
+          <div class="form-pane">
+            <div class="card">
+              <ContactForm client:load />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style is:global>
+  .contact-ultra-fix {
+    background: #FDFBF8 !important;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  .mega-hero {
+    background: #6B7C67 !important;
+    color: #FFFFFF !important;
+    text-align: center;
+    padding: 140px 0 80px !important;
+  }
+
+  .mega-hero h1 {
+    font-size: 4rem !important;
+    margin-bottom: 10px !important;
+    color: #FFFFFF !important;
+  }
+
+  .mega-hero p {
+    font-size: 1.25rem !important;
+    max-width: 600px;
+    margin: 0 auto !important;
+    color: #FFFFFF !important;
+    opacity: 0.9;
+  }
+
+  .content-body {
+    margin-top: -50px !important;
+    position: relative;
+    z-index: 10;
+  }
+
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .details-pane {
+    padding-top: 60px;
+  }
+
+  .details-pane h2 {
+    font-size: 2.5rem;
+    color: #6B7C67;
+    margin-bottom: 20px;
+  }
+
+  .details-pane .subtext {
+    color: #000000 !important;
+    font-weight: 500;
+  }
+
+  .contact-items {
+    margin: 40px 0;
+  }
+
+  .item {
+    margin-bottom: 30px;
+  }
+
+  .item .label {
+    display: block;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #6B7C67;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .item .value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #000000 !important;
+  }
+
+  .booking-notice {
+    background: #F5F1E9;
+    padding: 30px;
+    border-radius: 20px;
+    border-left: 6px solid #C1664C;
+  }
+
+  .booking-notice h4 {
+    margin-bottom: 10px;
+    color: #C1664C;
+  }
+
+  .booking-notice p {
+    color: #000000 !important;
+  }
+
+  .form-pane .card {
+    background: #FFFFFF !important;
+    padding: 60px !important;
+    border-radius: 40px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* PREMIUM FORM ELEMENTS */
+  .form-pane input, 
+  .form-pane select, 
+  .form-pane textarea {
+    width: 100% !important;
+    padding: 18px 20px !important;
+    border: 1.5px solid #E5E7E2 !important;
+    background: #FCFCFC !important;
+    border-radius: 16px !important;
+    font-size: 1rem !important;
+    color: #000000 !important;
+    margin-bottom: 20px !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .form-pane input:focus, 
+  .form-pane select:focus, 
+  .form-pane textarea:focus {
+    outline: none !important;
+    border-color: #6B7C67 !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 0 0 4px rgba(107, 124, 103, 0.1) !important;
+  }
+
+  .form-pane button[type="submit"],
+  .form-pane .submit-btn {
+    background: #6B7C67 !important;
+    color: #FFFFFF !important;
+    width: 100% !important;
+    padding: 20px !important;
+    border: none !important;
+    border-radius: 50px !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 10px 25px rgba(107, 124, 103, 0.25) !important;
+    margin-top: 10px !important;
+  }
+
+  .form-pane button[type="submit"]:hover,
+  .form-pane .submit-btn:hover {
+    background: #C1664C !important; /* Terracotta on hover */
+    transform: translateY(-2px) !important;
+  }
+
+  /* FORCE BLACK LABELS GLOBALLY FOR THIS PAGE */
+  html body .form-pane label,
+  html body .form-pane .label {
+    color: #000000 !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+    display: block !important;
+    margin-bottom: 10px !important;
+    font-size: 0.95rem !important;
+  }
+
+  @media (max-width: 992px) {
+    .split-grid {
+      grid-template-columns: 1fr;
+    }
+    .content-body {
+      margin-top: 0 !important;
+      padding-top: 40px;
+    }
+    .details-pane {
+      padding-top: 0;
+      text-align: center;
+    }
+  }
+</style>

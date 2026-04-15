@@ -1,0 +1,66 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'outline';
+  class?: string;
+}
+
+const { href, variant = 'primary', class: className } = Astro.props;
+
+const variants = {
+  primary: 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-accent)]',
+  secondary: 'bg-[var(--color-secondary)] text-[var(--color-text)] hover:opacity-90',
+  outline: 'border-2 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white',
+};
+---
+
+<a href={href} class={`btn ${variant} ${className}`}>
+  <slot />
+</a>
+
+<style>
+  .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    transition: all 0.3s var(--transition-smooth);
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .primary:hover {
+    background: var(--color-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .secondary {
+    background: var(--color-secondary);
+    color: var(--color-text);
+  }
+
+  .secondary:hover {
+    transform: translateY(-3px);
+  }
+
+  .outline {
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    background: transparent;
+  }
+
+  .outline:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+</style>

@@ -1,0 +1,198 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/common/Button.astro';
+
+const serviceCategories = [
+  {
+    category: 'Essential Care',
+    items: [
+      { 
+        title: 'Newborn Care Specialist', 
+        price: 'From $35/hr', 
+        desc: 'Specialized 24/7 or overnight care focusing on feeding, hygiene, and development for newborns.' 
+      },
+      { 
+        title: 'Daytime Nanny Services', 
+        price: 'From $30/hr', 
+        desc: 'Engaging and educational daytime care for infants and toddlers in the comfort of your home.' 
+      }
+    ]
+  },
+  {
+    category: 'Specialized Support',
+    items: [
+      { 
+        title: 'Sleep Training', 
+        price: '$500 Flat Fee', 
+        desc: 'A comprehensive 2-week program designed to establish healthy sleep patterns for infants (4+ months).' 
+      },
+      { 
+        title: 'Postpartum Doula', 
+        price: 'From $45/hr', 
+        desc: 'Non-medical support providing physical, emotional, and informational help to mothers after birth.' 
+      }
+    ]
+  }
+];
+---
+
+<Layout title="Services Portfolio | Toddler's Infantry">
+  <Navbar />
+  
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1 class="reveal">Exceptional Care Services</h1>
+        <p class="reveal">From newborn support to developmental guidance, we offer specialized services tailored to your family.</p>
+      </div>
+    </section>
+
+    {serviceCategories.map((cat, groupIndex) => (
+      <section class="service-group">
+        <div class="container">
+          <h2 class="category-title reveal">{cat.category}</h2>
+          <div class="services-list">
+            {cat.items.map((item, index) => (
+              <div class="service-item reveal" style={`--delay: ${index * 0.1}s`}>
+                <div class="service-info">
+                  <h3>{item.title}</h3>
+                  <p>{item.desc}</p>
+                </div>
+                <div class="service-meta">
+                  <span class="price">{item.price}</span>
+                  <Button href="/contact" variant="outline">Learn More</Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <section class="payment-note reveal">
+      <div class="container">
+        <div class="note-box">
+          <h3>📅 Booking Information</h3>
+          <p>Please note that a <strong>$25 non-refundable booking fee</strong> is required at the time of scheduling an appointment. This fee ensures your slot is reserved and is handled through our offline payment process.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .service-group {
+    padding: var(--space-xl) 0;
+  }
+
+  .category-title {
+    font-size: 2rem;
+    color: var(--color-primary);
+    margin-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-secondary);
+    display: inline-block;
+    font-weight: 700;
+  }
+
+  .services-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .service-item {
+    background: white;
+    border: 1px solid #eee;
+    padding: var(--space-lg);
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-lg);
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .service-item:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  }
+
+  .service-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: var(--space-xs);
+    color: var(--color-primary);
+  }
+
+  .service-info p {
+    color: #000000;
+    max-width: 800px;
+    font-weight: 500;
+  }
+
+  .service-meta {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .price {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #000000;
+  }
+
+  .payment-note {
+    padding: var(--space-xl) 0;
+  }
+
+  .note-box {
+    background: rgba(107, 124, 103, 0.1);
+    border-left: 5px solid var(--color-primary);
+    padding: var(--space-lg);
+    border-radius: 0 20px 20px 0;
+  }
+
+  @media (max-width: 768px) {
+    .service-item {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .service-meta {
+      text-align: center;
+      align-items: center;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('astro:page-load', () => {
+    const reveals = document.querySelectorAll('.reveal');
+    
+    // Hide initially via JS for animation
+    gsap.set(reveals, { opacity: 0, y: 30 });
+
+    reveals.forEach((el) => {
+      gsap.to(el, {
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 95%',
+        },
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        clearProps: 'all'
+      });
+    });
+  });
+</script>
