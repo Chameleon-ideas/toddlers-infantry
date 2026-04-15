@@ -3,11 +3,36 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import Button from '../components/common/Button.astro';
+import { getServices, getTestimonials, getFaqItems, getProcessSteps } from '../utils/sanity';
 
-const services = [
-  { title: 'Newborn Care', icon: '👶', desc: 'Expert night and day care for your little ones.' },
-  { title: 'Sleep Training', icon: '🌙', desc: 'Gentle methods to help your baby sleep through the night.' },
-  { title: 'Postpartum Support', icon: '🫂', desc: 'Emotional and physical support for new mothers.' },
+const [fetchedServices, fetchedTestimonials, fetchedFaq, fetchedSteps] = await Promise.all([
+  getServices(),
+  getTestimonials(),
+  getFaqItems(),
+  getProcessSteps(),
+]);
+
+const services = fetchedServices.length > 0 ? fetchedServices : [
+  { title: 'Newborn Care', icon: '👶', description: 'Expert night and day care for your little ones.' },
+  { title: 'Sleep Training', icon: '🌙', description: 'Gentle methods to help your baby sleep through the night.' },
+  { title: 'Postpartum Support', icon: '🫂', description: 'Emotional and physical support for new mothers.' },
+];
+
+const testimonials = fetchedTestimonials.length > 0 ? fetchedTestimonials : [
+  { quote: 'Kareen was a lifesaver for our firstborn. Her gentle approach to sleep training worked wonders in just a week!', author: 'Sarah & James', location: 'Calgary' },
+  { quote: 'Highly professional and incredibly nurturing. We felt 100% confident leaving our newborn in their hands.', author: 'Michael T.', location: 'Edmonton' },
+];
+
+const faqItems = fetchedFaq.length > 0 ? fetchedFaq : [
+  { question: 'Is Kareen Barrett involved in every case?', answer: 'Yes, Kareen personally oversees every care plan and conducts initial consultations to ensure the highest standards.' },
+  { question: 'Do you provide overnight support?', answer: 'Absolutely. We offer specialized overnight newborn care to help parents get the rest they need while ensuring the baby is safe and fed.' },
+  { question: 'How do payments work?', answer: 'We handle all payments offline. A $25 scheduling fee is required to book, with the remainder settled via direct invoice.' },
+];
+
+const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
+  { stepNumber: '01', title: 'Initial Consultation', description: 'We speak with you to understand your baby\'s current routine and your specific needs.' },
+  { stepNumber: '02', title: 'Custom Care Plan', description: 'Kareen Barrett designs a personalized care or sleep training strategy for your family.' },
+  { stepNumber: '03', title: 'Dedicated Support', description: 'Our expert team begins the care journey, providing continuous support and guidance.' },
 ];
 ---
 
@@ -47,7 +72,7 @@ const services = [
             <div class="service-card reveal" style={`--delay: ${index * 0.2}s`}>
               <div class="service-icon">{service.icon}</div>
               <h3>{service.title}</h3>
-              <p>{service.desc}</p>
+              <p>{service.description || service.desc}</p>
             </div>
           ))}
         </div>
@@ -62,21 +87,13 @@ const services = [
           <p>A simple, stress-free process to get the care your family deserves.</p>
         </div>
         <div class="process-grid">
-          <div class="process-item reveal">
-            <span class="step-number">01</span>
-            <h3>Initial Consultation</h3>
-            <p>We speak with you to understand your baby's current routine and your specific needs.</p>
-          </div>
-          <div class="process-item reveal">
-            <span class="step-number">02</span>
-            <h3>Custom Care Plan</h3>
-            <p>Kareen Barrett designs a personalized care or sleep training strategy for your family.</p>
-          </div>
-          <div class="process-item reveal">
-            <span class="step-number">03</span>
-            <h3>Dedicated Support</h3>
-            <p>Our expert team begins the care journey, providing continuous support and guidance.</p>
-          </div>
+          {processSteps.map((step) => (
+            <div class="process-item reveal">
+              <span class="step-number">{step.stepNumber}</span>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -89,14 +106,12 @@ const services = [
           <p>Join the many Alberta families who have found peace of mind with us.</p>
         </div>
         <div class="testimonials-grid">
-          <div class="testimonial-card reveal">
-            <p>"Kareen was a lifesaver for our firstborn. Her gentle approach to sleep training worked wonders in just a week!"</p>
-            <div class="author">- Sarah & James, Calgary</div>
-          </div>
-          <div class="testimonial-card reveal">
-            <p>"Highly professional and incredibly nurturing. We felt 100% confident leaving our newborn in their hands."</p>
-            <div class="author">- Michael T., Edmonton</div>
-          </div>
+          {testimonials.map((t) => (
+            <div class="testimonial-card reveal">
+              <p>"{t.quote}"</p>
+              <div class="author">- {t.author}{t.location ? `, ${t.location}` : ''}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -109,18 +124,12 @@ const services = [
           <p>Everything you need to know about our nanny and newborn services.</p>
         </div>
         <div class="faq-list">
-          <div class="faq-item reveal">
-            <h3>Is Kareen Barrett involved in every case?</h3>
-            <p>Yes, Kareen personally oversees every care plan and conducts initial consultations to ensure the highest standards.</p>
-          </div>
-          <div class="faq-item reveal">
-            <h3>Do you provide overnight support?</h3>
-            <p>Absolutely. We offer specialized overnight newborn care to help parents get the rest they need while ensuring the baby is safe and fed.</p>
-          </div>
-          <div class="faq-item reveal">
-            <h3>How do payments work?</h3>
-            <p>We handle all payments offline. A $25 scheduling fee is required to book, with the remainder settled via direct invoice.</p>
-          </div>
+          {faqItems.map((item) => (
+            <div class="faq-item reveal">
+              <h3>{item.question}</h3>
+              <p>{item.answer}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

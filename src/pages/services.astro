@@ -3,39 +3,28 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import Button from '../components/common/Button.astro';
+import { getServicesByCategory } from '../utils/sanity';
 
-const serviceCategories = [
+const fetched = await getServicesByCategory();
+
+const fallback = [
   {
     category: 'Essential Care',
     items: [
-      { 
-        title: 'Newborn Care Specialist', 
-        price: 'From $35/hr', 
-        desc: 'Specialized 24/7 or overnight care focusing on feeding, hygiene, and development for newborns.' 
-      },
-      { 
-        title: 'Daytime Nanny Services', 
-        price: 'From $30/hr', 
-        desc: 'Engaging and educational daytime care for infants and toddlers in the comfort of your home.' 
-      }
+      { title: 'Newborn Care Specialist', price: 'From $35/hr', description: 'Specialized 24/7 or overnight care focusing on feeding, hygiene, and development for newborns.' },
+      { title: 'Daytime Nanny Services', price: 'From $30/hr', description: 'Engaging and educational daytime care for infants and toddlers in the comfort of your home.' }
     ]
   },
   {
     category: 'Specialized Support',
     items: [
-      { 
-        title: 'Sleep Training', 
-        price: '$500 Flat Fee', 
-        desc: 'A comprehensive 2-week program designed to establish healthy sleep patterns for infants (4+ months).' 
-      },
-      { 
-        title: 'Postpartum Doula', 
-        price: 'From $45/hr', 
-        desc: 'Non-medical support providing physical, emotional, and informational help to mothers after birth.' 
-      }
+      { title: 'Sleep Training', price: '$500 Flat Fee', description: 'A comprehensive 2-week program designed to establish healthy sleep patterns for infants (4+ months).' },
+      { title: 'Postpartum Doula', price: 'From $45/hr', description: 'Non-medical support providing physical, emotional, and informational help to mothers after birth.' }
     ]
   }
 ];
+
+const serviceCategories = fetched.length > 0 ? fetched : fallback;
 ---
 
 <Layout title="Services Portfolio | Toddler's Infantry">
@@ -58,7 +47,7 @@ const serviceCategories = [
               <div class="service-item reveal" style={`--delay: ${index * 0.1}s`}>
                 <div class="service-info">
                   <h3>{item.title}</h3>
-                  <p>{item.desc}</p>
+                  <p>{item.description || item.desc}</p>
                 </div>
                 <div class="service-meta">
                   <span class="price">{item.price}</span>
