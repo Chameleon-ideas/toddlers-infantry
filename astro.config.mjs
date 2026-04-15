@@ -7,7 +7,7 @@ export default defineConfig({
   integrations: [
     react(),
     sanity({
-      projectId: 'v5fsrvv1', // Placeholder Project ID (can be updated later)
+      projectId: 'z81qmmi3',
       dataset: 'production',
       apiVersion: '2025-01-28',
       useCdn: true,
