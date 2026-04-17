@@ -1,4 +1,36 @@
 ---
+interface FooterLink {
+  label: string;
+  url: string;
+}
+
+interface Props {
+  logoUrl?: string;
+  logoAlt?: string;
+  tagline?: string;
+  links?: FooterLink[];
+  email?: string;
+  phone?: string;
+  location?: string;
+  copyrightName?: string;
+}
+
+const {
+  logoUrl,
+  logoAlt = "Toddler's Infantry Logo",
+  tagline = "Premium newborn and baby care services dedicated to nurturing your child's growth and happiness.",
+  links = [
+    { label: 'Home',     url: '/' },
+    { label: 'About Us', url: '/about' },
+    { label: 'Services', url: '/services' },
+    { label: 'Contact',  url: '/contact' },
+  ],
+  email    = 'care@toddlersinfantry.com',
+  phone    = '(555) 123-4567',
+  location = 'Alberta, Canada',
+  copyrightName = "Toddler's Infantry",
+} = Astro.props;
+
 const currentYear = new Date().getFullYear();
 ---
 
@@ -6,30 +38,39 @@ const currentYear = new Date().getFullYear();
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <img src="/logo.png" alt="Toddler's Infantry Logo" class="footer-logo" />
-        <p>Premium newborn and baby care services dedicated to nurturing your child's growth and happiness.</p>
+        <img
+          src={logoUrl || "/logo.png"}
+          alt={logoAlt}
+          class="footer-logo"
+        />
+        <p>{tagline}</p>
       </div>
-      
+
       <div class="footer-links">
         <h3>Quick Links</h3>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="/services">Services</a></li>
-          <li><a href="/contact">Contact</a></li>
+          {links.map((link) => (
+            <li><a href={link.url}>{link.label}</a></li>
+          ))}
         </ul>
       </div>
-      
+
       <div class="footer-contact">
         <h3>Contact Info</h3>
-        <p>Email: care@toddlersinfantry.com</p>
-        <p>Phone: (555) 123-4567</p>
-        <p>Location: Alberta, Canada</p>
+        {email    && <p>Email: {email}</p>}
+        {phone    && <p>Phone: {phone}</p>}
+        {location && <p>Location: {location}</p>}
       </div>
     </div>
-    
+
     <div class="footer-bottom">
-      <p>&copy; {currentYear} Toddler's Infantry. All rights reserved. <br/> Designed and Developed by <a href="https://chameleon-ideas.com" target="_blank" rel="noopener noreferrer">Chameleon Ideas Inc.</a></p>
+      <p>
+        &copy; {currentYear} {copyrightName}. All rights reserved. <br /> Designed
+        and Developed by <a
+          href="https://chameleon-ideas.com"
+          target="_blank"
+          rel="noopener noreferrer">Chameleon Ideas Inc.</a>
+      </p>
     </div>
   </div>
 </footer>

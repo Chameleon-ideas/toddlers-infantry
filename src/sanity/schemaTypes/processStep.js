@@ -1,6 +1,6 @@
 export const processStepType = {
   name: 'processStep',
-  title: 'Process Step',
+  title: 'Process Step (home)',
   type: 'document',
   fields: [
     {

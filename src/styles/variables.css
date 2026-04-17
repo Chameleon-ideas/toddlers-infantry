@@ -1,11 +1,16 @@
 :root {
   /* BRAND COLORS - Earthy Premium (Punchier) */
-  --color-primary: #6B7C67;    /* Deeper Forest Sage */
-  --color-secondary: #F5F1E9;  /* Richer Warm Cream */
-  --color-accent: #C1664C;     /* Vibrant Earthy Terracotta */
-  --color-text: #1A1A1A;       /* Stronger Charcoal */
+  --color-primary: #6B7C67;
+  /* Deeper Forest Sage */
+  --color-secondary: #F5F1E9;
+  /* Richer Warm Cream */
+  --color-accent: #C1664C;
+  /* Vibrant Earthy Terracotta */
+  --color-text: #1A1A1A;
+  /* Stronger Charcoal */
   --color-white: #FFFFFF;
-  --color-bg-light: #F9F4F0;   /* Warmer Light Background */
+  --color-bg-light: #F9F4F0;
+  /* Warmer Light Background */
 
   /* FONTS */
   --font-heading: 'Outfit', sans-serif;
@@ -14,9 +19,12 @@
   /* SPACING - Refined (Tightened) */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
-  --space-md: 1.5rem;        /* Was 2rem */
-  --space-lg: 3rem;          /* Was 4rem */
-  --space-xl: 5rem;          /* Was 8rem */
+  --space-md: 1.5rem;
+  /* Was 2rem */
+  --space-lg: 3rem;
+  /* Was 4rem */
+  --space-xl: 3rem;
+  /* Was 8rem */
 
   /* ANIMATIONS */
   --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
@@ -33,7 +41,12 @@ body {
   line-height: 1.6;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 600;
   line-height: 1.2;
@@ -56,13 +69,15 @@ h1, h2, h3, h4, h5, h6 {
   background-image: radial-gradient(#6B7C67 1px, transparent 1px);
   background-size: 32px 32px;
   background-position: 0 0;
-  opacity: 0.12; /* More visible but still subtle */
+  opacity: 0.12;
+  /* More visible but still subtle */
 }
 
 /* GLOBAL SECTION STYLES */
 .page-header {
   padding: calc(var(--navbar-height) + var(--space-lg)) 0 var(--space-lg);
-  background: #6B7C67 !important; /* Sage */
+  background: #6B7C67 !important;
+  /* Sage */
   color: #FFFFFF !important;
   text-align: center;
   position: relative;
@@ -116,7 +131,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* GLOBAL FORM FORCING */
-.form-container label, 
+.form-container label,
 .form-container .label {
   color: #000000 !important;
   font-weight: 800 !important;
@@ -125,8 +140,8 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 8px !important;
 }
 
-.form-container input, 
-.form-container select, 
+.form-container input,
+.form-container select,
 .form-container textarea {
   color: #000000 !important;
   background: #fcfcfc !important;

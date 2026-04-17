@@ -1,16 +1,19 @@
 ---
 interface Props {
   href: string;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: "primary" | "secondary" | "outline";
   class?: string;
 }
 
-const { href, variant = 'primary', class: className } = Astro.props;
+const { href, variant = "primary", class: className } = Astro.props;
 
 const variants = {
-  primary: 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-accent)]',
-  secondary: 'bg-[var(--color-secondary)] text-[var(--color-text)] hover:opacity-90',
-  outline: 'border-2 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white',
+  primary:
+    "bg-[var(--color-primary)] text-white hover:bg-[var(--color-accent)]",
+  secondary:
+    "bg-[var(--color-secondary)] text-[var(--color-text)] hover:opacity-90",
+  outline:
+    "border-2 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white",
 };
 ---
 

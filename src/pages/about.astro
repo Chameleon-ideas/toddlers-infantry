@@ -1,73 +1,162 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import Button from '../components/common/Button.astro';
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/common/Button.astro";
+import { getSiteSettings, getAboutPage, urlFor } from "../utils/sanity";
+
+const [siteSettings, cms] = await Promise.all([
+  getSiteSettings(),
+  getAboutPage(),
+]);
+
+// ── Logo / Navbar ─────────────────────────────────────────────────────────────
+const logoUrl = siteSettings?.logo
+  ? urlFor(siteSettings.logo).width(300).auto("format").url()
+  : null;
+const logoAlt = siteSettings?.logo?.alt || "Toddler's Infantry Logo";
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+const footerProps = {
+  logoUrl: logoUrl ?? undefined,
+  logoAlt,
+  tagline: siteSettings?.footerTagline || undefined,
+  links: siteSettings?.footerLinks?.length
+    ? siteSettings.footerLinks
+    : undefined,
+  email: siteSettings?.contactEmail || undefined,
+  phone: siteSettings?.contactPhone || undefined,
+  location: siteSettings?.contactLocation || undefined,
+  copyrightName: siteSettings?.footerCopyrightName || undefined,
+};
+
+// ── Page Header ───────────────────────────────────────────────────────────────
+const heroHeading = cms?.heroHeading || "Our Story & Approach";
+const heroSubtext =
+  cms?.heroSubtext ||
+  "Dedicated to providing the most nurturing and professional newborn care in Alberta, Canada.";
+
+// ── About Content ─────────────────────────────────────────────────────────────
+const aboutHeading =
+  cms?.aboutHeading || "Nurturing the Future, One Small Step at a Time";
+const aboutParagraph1 =
+  cms?.aboutParagraph1 ||
+  "At Toddler's Infantry, we believe that the first months and years of a child's life are the most critical. Founded by Kareen Barrett, our agency was born out of a passion for supporting new families through the beautiful yet challenging transition of early parenthood.";
+const aboutParagraph2 =
+  cms?.aboutParagraph2 ||
+  'Our approach is centered on trust, professionalism, and personalized care. We don\'t just provide "babysitting"; we provide specialized newborn care that focuses on developmental milestones, sleep health, and physical support for both the baby and the parents.';
+
+// ── About Image ───────────────────────────────────────────────────────────────
+const aboutImageUrl = cms?.aboutImage
+  ? urlFor(cms.aboutImage)
+      .width(600)
+      .height(600)
+      .fit("crop")
+      .auto("format")
+      .url()
+  : null;
+const aboutImageAlt = cms?.aboutImage?.alt || "Caregiver with baby";
+
+// ── Approach Items ────────────────────────────────────────────────────────────
+const approachItems =
+  cms?.approachItems?.length > 0
+    ? cms.approachItems
+    : [
+        {
+          icon: "✨",
+          heading: "Trust & Safety",
+          description:
+            "All our caregivers are highly experienced, certified, and background-checked.",
+        },
+        {
+          icon: "🌿",
+          heading: "Holistic Well-being",
+          description:
+            "Supporting emotional health and physical development through gentle techniques.",
+        },
+      ];
+
+// ── Team / Bio ────────────────────────────────────────────────────────────────
+const teamSectionHeading = cms?.teamSectionHeading || "Meet Kareen Barrett";
+const teamSectionSubtext =
+  cms?.teamSectionSubtext || "The vision and heart behind Toddler's Infantry.";
+const bioText =
+  cms?.bioText ||
+  "Kareen Barrett has over 15 years of experience in newborn and baby care. Her journey started as a neonatal nurse and evolved into a specialized consultancy for sleep training and postpartum support. She leads a team of dedicated professionals who share her mission: to ensure every family feels confident and every baby feels loved.";
+const bioCtaLabel = cms?.bioCtaLabel || "Book a consultation with Kareen";
+const bioCtaUrl = cms?.bioCtaUrl || "/contact";
 ---
 
 <Layout title="About Us | Toddler's Infantry">
-  <Navbar />
-  
+  <Navbar logoUrl={logoUrl ?? undefined} logoAlt={logoAlt} />
+
   <main>
+    <!-- PAGE HEADER -->
     <section class="page-header">
       <div class="container">
-        <h1 class="reveal">Our Story & Approach</h1>
-        <p class="reveal">Dedicated to providing the most nurturing and professional newborn care in Alberta, Canada.</p>
+        <h1 class="reveal">{heroHeading}</h1>
+        <p class="reveal">{heroSubtext}</p>
       </div>
     </section>
 
+    <!-- ABOUT CONTENT -->
     <section class="about-content">
       <div class="container">
         <div class="about-grid">
           <div class="about-text reveal">
-            <h2>Nurturing the Future, One Small Step at a Time</h2>
-            <p>At Toddler's Infantry, we believe that the first months and years of a child's life are the most critical. Founded by Kareen Barrett, our agency was born out of a passion for supporting new families through the beautiful yet challenging transition of early parenthood.</p>
-            <p>Our approach is centered on <strong>trust, professionalism, and personalized care</strong>. We don't just provide "babysitting"; we provide specialized newborn care that focuses on developmental milestones, sleep health, and physical support for both the baby and the parents.</p>
-            
+            <h2>{aboutHeading}</h2>
+            <p>{aboutParagraph1}</p>
+            <p>{aboutParagraph2}</p>
+
             <div class="approach-list">
-              <div class="approach-item">
-                <span class="icon">✨</span>
-                <div>
-                  <h4>Trust & Safety</h4>
-                  <p>All our caregivers are highly experienced, certified, and background-checked.</p>
-                </div>
-              </div>
-              <div class="approach-item">
-                <span class="icon">🌿</span>
-                <div>
-                  <h4>Holistic Well-being</h4>
-                  <p>Supporting emotional health and physical development through gentle techniques.</p>
-                </div>
-              </div>
+              {
+                approachItems.map((item: any) => (
+                  <div class="approach-item">
+                    <span class="icon">{item.icon}</span>
+                    <div>
+                      <h4>{item.heading}</h4>
+                      <p>{item.description}</p>
+                    </div>
+                  </div>
+                ))
+              }
             </div>
           </div>
+
           <div class="about-image reveal">
             <div class="image-accent">
-              <img src="/logo.png" alt="Caregiver with baby" />
+              {
+                aboutImageUrl ? (
+                  <img src={aboutImageUrl} alt={aboutImageAlt} loading="lazy" />
+                ) : (
+                  <img src="/logo.png" alt={aboutImageAlt} loading="lazy" />
+                )
+              }
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- TEAM / BIO SECTION -->
     <section class="team-section">
       <div class="container">
-        <div class="section-title reveal">
-          <h2>Meet Kareen Barrett</h2>
-          <p>The vision and heart behind Toddler's Infantry.</p>
+        <div class="section-title reveal text-center about-text">
+          <h2>{teamSectionHeading}</h2>
+          <p>{teamSectionSubtext}</p>
         </div>
-        
+
         <div class="bio-card reveal">
           <div class="bio-text">
-            <p>Kareen Barrett has over 15 years of experience in newborn and baby care. Her journey started as a neonatal nurse and evolved into a specialized consultancy for sleep training and postpartum support. She leads a team of dedicated professionals who share her mission: to ensure every family feels confident and every baby feels loved.</p>
-            <Button href="/contact">Book a consultation with Kareen</Button>
+            <p>{bioText}</p>
+            <Button href={bioCtaUrl}>{bioCtaLabel}</Button>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <Footer />
+  <Footer {...footerProps} />
 </Layout>
 
 <style>
@@ -83,7 +172,7 @@ import Button from '../components/common/Button.astro';
   }
 
   .about-text h2 {
-    font-size: 2.5rem;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
     margin-bottom: var(--space-md);
     color: var(--color-primary);
   }
@@ -109,6 +198,7 @@ import Button from '../components/common/Button.astro';
     background: white;
     width: 50px;
     height: 50px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -130,6 +220,16 @@ import Button from '../components/common/Button.astro';
   .image-accent img {
     max-width: 300px;
     height: auto;
+    display: block;
+  }
+
+  .text-center {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .text-green {
+    color: #6b7c67;
   }
 
   .team-section {
@@ -153,6 +253,7 @@ import Button from '../components/common/Button.astro';
     margin-bottom: var(--space-lg);
   }
 
+  /* ── Tablet ── */
   @media (max-width: 992px) {
     .about-grid {
       grid-template-columns: 1fr;
@@ -161,32 +262,105 @@ import Button from '../components/common/Button.astro';
     .about-image {
       order: -1;
     }
+    .approach-item {
+      justify-content: center;
+    }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    .about-content {
+      padding: var(--space-lg) 0;
+    }
+
+    .about-text p {
+      font-size: 1rem;
+    }
+
+    .approach-list {
+      margin-top: var(--space-md);
+    }
+
+    .approach-item {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-sm);
+    }
+
+    .approach-item .icon {
+      width: 44px;
+      height: 44px;
+      font-size: 1.25rem;
+    }
+
+    .image-accent {
+      padding: var(--space-lg);
+      border-radius: 30px;
+    }
+
+    .image-accent img {
+      max-width: 200px;
+    }
+
+    .team-section {
+      padding: var(--space-lg) 0;
+    }
+
+    .bio-card {
+      padding: var(--space-lg) var(--space-md);
+      border-radius: 24px;
+    }
+
+    .bio-text p {
+      font-size: 1rem;
+      margin-bottom: var(--space-md);
+    }
+  }
+
+  /* ── Small mobile ── */
+  @media (max-width: 480px) {
+    .about-content {
+      padding: var(--space-md) 0;
+    }
+
+    .bio-card {
+      padding: var(--space-md);
+      border-radius: 20px;
+    }
+
+    .image-accent {
+      padding: var(--space-md);
+    }
+
+    .image-accent img {
+      max-width: 160px;
+    }
   }
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   gsap.registerPlugin(ScrollTrigger);
 
-  document.addEventListener('astro:page-load', () => {
-    const reveals = document.querySelectorAll('.reveal');
-    
-    // Hide initially via JS for animation
+  document.addEventListener("astro:page-load", () => {
+    const reveals = document.querySelectorAll(".reveal");
+
     gsap.set(reveals, { opacity: 0, y: 20 });
 
     reveals.forEach((el) => {
       gsap.to(el, {
         scrollTrigger: {
           trigger: el,
-          start: 'top 95%',
+          start: "top 95%",
         },
         y: 0,
         opacity: 1,
         duration: 1,
-        ease: 'power3.out',
-        clearProps: 'all'
+        ease: "power3.out",
+        clearProps: "all",
       });
     });
   });

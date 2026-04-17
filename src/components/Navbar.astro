@@ -1,4 +1,11 @@
 ---
+interface Props {
+  logoUrl?: string;
+  logoAlt?: string;
+}
+
+const { logoUrl, logoAlt = "Toddler's Infantry Logo" } = Astro.props;
+
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
@@ -10,7 +17,7 @@ const navLinks = [
 <nav id="main-nav">
   <div class="container">
     <a href="/" class="logo" aria-label="Toddler's Infantry Home">
-      <img src="/logo.png" alt="Toddler's Infantry Logo" width="150" height="auto" />
+      <img src={logoUrl || "/logo.png"} alt={logoAlt} width="150" height="auto" />
     </a>
     
     <div class="nav-links">
@@ -118,9 +125,30 @@ const navLinks = [
   @media (max-width: 768px) {
     .nav-links {
       display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: var(--space-md);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    .nav-links.active {
+      display: flex;
     }
     .mobile-toggle {
       display: flex;
+    }
+    .mobile-toggle.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .mobile-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .mobile-toggle.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
     }
   }
 </style>
@@ -138,8 +166,17 @@ const navLinks = [
     }
   });
 
-  // Entrance animation
+  // Entrance animation and mobile toggle
   document.addEventListener('astro:page-load', () => {
+    // Mobile menu toggle
+    const toggle = document.querySelector('.mobile-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    toggle?.addEventListener('click', () => {
+      toggle.classList.toggle('active');
+      navLinks?.classList.toggle('active');
+    });
+
     gsap.from('#main-nav', {
       y: -100,
       opacity: 0,

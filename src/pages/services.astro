@@ -3,38 +3,75 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import Button from '../components/common/Button.astro';
-import { getServicesByCategory } from '../utils/sanity';
+import { getServicesByCategory, getServicesPage, getSiteSettings, urlFor } from '../utils/sanity';
 
-const fetched = await getServicesByCategory();
+const [fetched, pageData, siteSettings] = await Promise.all([
+  getServicesByCategory(),
+  getServicesPage(),
+  getSiteSettings(),
+]);
 
+// ── Logo / Navbar ─────────────────────────────────────────────────────────────
+const logoUrl = siteSettings?.logo
+  ? urlFor(siteSettings.logo).width(300).auto('format').url()
+  : null;
+const logoAlt = siteSettings?.logo?.alt || "Toddler's Infantry Logo";
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+const footerProps = {
+  logoUrl:       logoUrl ?? undefined,
+  logoAlt,
+  tagline:       siteSettings?.footerTagline      || undefined,
+  links:         siteSettings?.footerLinks?.length ? siteSettings.footerLinks : undefined,
+  email:         siteSettings?.contactEmail        || undefined,
+  phone:         siteSettings?.contactPhone        || undefined,
+  location:      siteSettings?.contactLocation     || undefined,
+  copyrightName: siteSettings?.footerCopyrightName || undefined,
+};
+
+// ── Page header ───────────────────────────────────────────────────────────────
+const pageHeading = pageData?.pageHeading || 'Exceptional Care Services';
+const pageSubtext  = pageData?.pageSubtext  || 'From newborn support to developmental guidance, we offer specialized services tailored to your family.';
+
+// ── Booking note ──────────────────────────────────────────────────────────────
+const bookingIcon    = pageData?.bookingNoteIcon    || '📅';
+const bookingHeading = pageData?.bookingNoteHeading || 'Booking Information';
+const bookingBody    = pageData?.bookingNoteBody
+  || 'Please note that a $25 non-refundable booking fee is required at the time of scheduling an appointment. This fee ensures your slot is reserved and is handled through our offline payment process.';
+
+// ── Service card CTA ──────────────────────────────────────────────────────────
+const serviceCtaLabel = pageData?.serviceCtaLabel || 'Learn More';
+const serviceCtaUrl   = pageData?.serviceCtaUrl   || '/contact';
+
+// ── Service categories (with fallback) ───────────────────────────────────────
 const fallback = [
   {
     category: 'Essential Care',
     items: [
       { title: 'Newborn Care Specialist', price: 'From $35/hr', description: 'Specialized 24/7 or overnight care focusing on feeding, hygiene, and development for newborns.' },
-      { title: 'Daytime Nanny Services', price: 'From $30/hr', description: 'Engaging and educational daytime care for infants and toddlers in the comfort of your home.' }
-    ]
+      { title: 'Daytime Nanny Services',  price: 'From $30/hr', description: 'Engaging and educational daytime care for infants and toddlers in the comfort of your home.' },
+    ],
   },
   {
     category: 'Specialized Support',
     items: [
-      { title: 'Sleep Training', price: '$500 Flat Fee', description: 'A comprehensive 2-week program designed to establish healthy sleep patterns for infants (4+ months).' },
-      { title: 'Postpartum Doula', price: 'From $45/hr', description: 'Non-medical support providing physical, emotional, and informational help to mothers after birth.' }
-    ]
-  }
+      { title: 'Sleep Training',    price: '$500 Flat Fee', description: 'A comprehensive 2-week program designed to establish healthy sleep patterns for infants (4+ months).' },
+      { title: 'Postpartum Doula', price: 'From $45/hr',   description: 'Non-medical support providing physical, emotional, and informational help to mothers after birth.' },
+    ],
+  },
 ];
 
 const serviceCategories = fetched.length > 0 ? fetched : fallback;
 ---
 
 <Layout title="Services Portfolio | Toddler's Infantry">
-  <Navbar />
+  <Navbar logoUrl={logoUrl ?? undefined} logoAlt={logoAlt} />
   
   <main>
     <section class="page-header">
       <div class="container">
-        <h1 class="reveal">Exceptional Care Services</h1>
-        <p class="reveal">From newborn support to developmental guidance, we offer specialized services tailored to your family.</p>
+        <h1 class="reveal">{pageHeading}</h1>
+        <p class="reveal">{pageSubtext}</p>
       </div>
     </section>
 
@@ -43,15 +80,15 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
         <div class="container">
           <h2 class="category-title reveal">{cat.category}</h2>
           <div class="services-list">
-            {cat.items.map((item, index) => (
+            {cat.items.map((item: any, index: number) => (
               <div class="service-item reveal" style={`--delay: ${index * 0.1}s`}>
                 <div class="service-info">
                   <h3>{item.title}</h3>
                   <p>{item.description || item.desc}</p>
                 </div>
                 <div class="service-meta">
-                  <span class="price">{item.price}</span>
-                  <Button href="/contact" variant="outline">Learn More</Button>
+                  {item.price && <span class="price">{item.price}</span>}
+                  <Button href={serviceCtaUrl} variant="outline">{serviceCtaLabel}</Button>
                 </div>
               </div>
             ))}
@@ -63,15 +100,16 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
     <section class="payment-note reveal">
       <div class="container">
         <div class="note-box">
-          <h3>📅 Booking Information</h3>
-          <p>Please note that a <strong>$25 non-refundable booking fee</strong> is required at the time of scheduling an appointment. This fee ensures your slot is reserved and is handled through our offline payment process.</p>
+          <h3>{bookingIcon} {bookingHeading}</h3>
+          <p>{bookingBody}</p>
         </div>
       </div>
     </section>
   </main>
 
-  <Footer />
+  <Footer {...footerProps} />
 </Layout>
+
 
 <style>
   .service-group {

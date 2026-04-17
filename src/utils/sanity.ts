@@ -1,7 +1,19 @@
 import { sanityClient } from "sanity:client";
+import imageUrlBuilder from "@sanity/image-url";
+
+// ── Image URL builder ─────────────────────────────────────────────────────────
+const builder = imageUrlBuilder(sanityClient);
+
+/**
+ * Convert a Sanity image reference object into an optimised CDN URL.
+ * Usage: urlFor(image).width(800).url()
+ */
+export function urlFor(source: any) {
+  return builder.image(source);
+}
 
 export async function getServices() {
-  return sanityClient.fetch(`*[_type == "service"] | order(category asc, title asc)`);
+  return sanityClient.fetch(`*[_type == "service"] | order(category asc, order asc, title asc)`);
 }
 
 export async function getServicesByCategory() {
@@ -29,4 +41,20 @@ export async function getProcessSteps() {
 
 export async function getSiteSettings() {
   return sanityClient.fetch(`*[_type == "siteSettings"][0]`);
+}
+
+export async function getHomePage() {
+  return sanityClient.fetch(`*[_type == "homePage"][0]`);
+}
+
+export async function getServicesPage() {
+  return sanityClient.fetch(`*[_type == "servicesPage"][0]`);
+}
+
+export async function getContactPage() {
+  return sanityClient.fetch(`*[_type == "contactPage"][0]`);
+}
+
+export async function getAboutPage() {
+  return sanityClient.fetch(`*[_type == "aboutPage"][0]`);
 }

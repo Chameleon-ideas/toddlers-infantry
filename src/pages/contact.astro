@@ -3,16 +3,57 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ContactForm from '../components/ContactForm';
+import { getSiteSettings, getContactPage, urlFor } from '../utils/sanity';
+
+const [siteSettings, pageData] = await Promise.all([
+  getSiteSettings(),
+  getContactPage(),
+]);
+
+// ── Logo / Navbar ─────────────────────────────────────────────────────────────
+const logoUrl = siteSettings?.logo
+  ? urlFor(siteSettings.logo).width(300).auto('format').url()
+  : null;
+const logoAlt = siteSettings?.logo?.alt || "Toddler's Infantry Logo";
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+const footerProps = {
+  logoUrl:       logoUrl ?? undefined,
+  logoAlt,
+  tagline:       siteSettings?.footerTagline      || undefined,
+  links:         siteSettings?.footerLinks?.length ? siteSettings.footerLinks : undefined,
+  email:         siteSettings?.contactEmail        || undefined,
+  phone:         siteSettings?.contactPhone        || undefined,
+  location:      siteSettings?.contactLocation     || undefined,
+  copyrightName: siteSettings?.footerCopyrightName || undefined,
+};
+
+// ── Hero ──────────────────────────────────────────────────────────────────────
+const heroHeading = pageData?.heroHeading || 'Get in Touch';
+const heroSubtext  = pageData?.heroSubtext  || "Ready to start your journey with Toddler's Infantry? Fill out the form below to request an appointment or inquiry.";
+
+// ── Contact details panel ─────────────────────────────────────────────────────
+const detailsHeading = pageData?.detailsHeading || 'Contact Details';
+const detailsSubtext  = pageData?.detailsSubtext  || 'If you have urgent questions, feel free to reach out directly via email or phone.';
+
+const contactEmail    = siteSettings?.contactEmail    || 'care@toddlersinfantry.com';
+const contactPhone    = siteSettings?.contactPhone    || '(555) 123-4567';
+const contactLocation = siteSettings?.contactLocation || 'Alberta, Canada';
+
+// ── Booking notice ────────────────────────────────────────────────────────────
+const bookingNoticeHeading = pageData?.bookingNoticeHeading || 'Note on Payments';
+const bookingNoticeBody    = pageData?.bookingNoticeBody
+  || 'Appointments require a $25 booking fee. Details for offline payment will be sent upon form submission by Kareen Barrett.';
 ---
 
 <Layout title="Book an Appointment | Toddler's Infantry">
-  <Navbar />
+  <Navbar logoUrl={logoUrl ?? undefined} logoAlt={logoAlt} />
   
   <main class="contact-ultra-fix">
     <section class="mega-hero">
       <div class="container">
-        <h1>Get in Touch</h1>
-        <p>Ready to start your journey with Toddler's Infantry? Fill out the form below to request an appointment or inquiry.</p>
+        <h1>{heroHeading}</h1>
+        <p>{heroSubtext}</p>
       </div>
     </section>
 
@@ -20,27 +61,33 @@ import ContactForm from '../components/ContactForm';
       <div class="container">
         <div class="split-grid">
           <div class="details-pane">
-            <h2>Contact Details</h2>
-            <p className="subtext">If you have urgent questions, feel free to reach out directly via email or phone.</p>
+            <h2>{detailsHeading}</h2>
+            <p class="subtext">{detailsSubtext}</p>
             
             <div class="contact-items">
-              <div class="item">
-                <span class="label">Email</span>
-                <span class="value">care@toddlersinfantry.com</span>
-              </div>
-              <div class="item">
-                <span class="label">Phone</span>
-                <span class="value">(555) 123-4567</span>
-              </div>
-              <div class="item">
-                <span class="label">Location</span>
-                <span class="value">Alberta, Canada</span>
-              </div>
+              {contactEmail && (
+                <div class="item">
+                  <span class="label">Email</span>
+                  <span class="value">{contactEmail}</span>
+                </div>
+              )}
+              {contactPhone && (
+                <div class="item">
+                  <span class="label">Phone</span>
+                  <span class="value">{contactPhone}</span>
+                </div>
+              )}
+              {contactLocation && (
+                <div class="item">
+                  <span class="label">Location</span>
+                  <span class="value">{contactLocation}</span>
+                </div>
+              )}
             </div>
 
             <div class="booking-notice">
-              <h4>Note on Payments</h4>
-              <p>Appointments require a <strong>$25 booking fee</strong>. Details for offline payment will be sent upon form submission by Kareen Barrett.</p>
+              <h4>{bookingNoticeHeading}</h4>
+              <p>{bookingNoticeBody}</p>
             </div>
           </div>
 
@@ -54,7 +101,7 @@ import ContactForm from '../components/ContactForm';
     </section>
   </main>
 
-  <Footer />
+  <Footer {...footerProps} />
 </Layout>
 
 <style is:global>

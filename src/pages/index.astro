@@ -1,59 +1,201 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import Button from '../components/common/Button.astro';
-import { getServices, getTestimonials, getFaqItems, getProcessSteps } from '../utils/sanity';
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/common/Button.astro";
+import {
+  getServices,
+  getTestimonials,
+  getFaqItems,
+  getProcessSteps,
+  getHomePage,
+  getSiteSettings,
+  urlFor,
+} from "../utils/sanity";
 
-const [fetchedServices, fetchedTestimonials, fetchedFaq, fetchedSteps] = await Promise.all([
-  getServices(),
-  getTestimonials(),
-  getFaqItems(),
-  getProcessSteps(),
-]);
+const [fetchedServices, fetchedTestimonials, fetchedFaq, fetchedSteps, cms, siteSettings] =
+  await Promise.all([
+    getServices(),
+    getTestimonials(),
+    getFaqItems(),
+    getProcessSteps(),
+    getHomePage(),
+    getSiteSettings(),
+  ]);
 
-const services = fetchedServices.length > 0 ? fetchedServices : [
-  { title: 'Newborn Care', icon: '👶', description: 'Expert night and day care for your little ones.' },
-  { title: 'Sleep Training', icon: '🌙', description: 'Gentle methods to help your baby sleep through the night.' },
-  { title: 'Postpartum Support', icon: '🫂', description: 'Emotional and physical support for new mothers.' },
-];
+// ── Image URLs ────────────────────────────────────────────────────────────────
+const logoUrl = siteSettings?.logo
+  ? urlFor(siteSettings.logo).width(300).auto('format').url()
+  : null;
+const logoAlt = siteSettings?.logo?.alt || "Toddler's Infantry Logo";
 
-const testimonials = fetchedTestimonials.length > 0 ? fetchedTestimonials : [
-  { quote: 'Kareen was a lifesaver for our firstborn. Her gentle approach to sleep training worked wonders in just a week!', author: 'Sarah & James', location: 'Calgary' },
-  { quote: 'Highly professional and incredibly nurturing. We felt 100% confident leaving our newborn in their hands.', author: 'Michael T.', location: 'Edmonton' },
-];
+const heroImageUrl = cms?.heroImage
+  ? urlFor(cms.heroImage).width(800).height(800).fit('crop').auto('format').url()
+  : null;
+const heroImageAlt = cms?.heroImage?.alt || 'Baby Care';
 
-const faqItems = fetchedFaq.length > 0 ? fetchedFaq : [
-  { question: 'Is Kareen Barrett involved in every case?', answer: 'Yes, Kareen personally oversees every care plan and conducts initial consultations to ensure the highest standards.' },
-  { question: 'Do you provide overnight support?', answer: 'Absolutely. We offer specialized overnight newborn care to help parents get the rest they need while ensuring the baby is safe and fed.' },
-  { question: 'How do payments work?', answer: 'We handle all payments offline. A $25 scheduling fee is required to book, with the remainder settled via direct invoice.' },
-];
+// ── Footer props ──────────────────────────────────────────────────────────────
+const footerProps = {
+  logoUrl:       logoUrl ?? undefined,
+  logoAlt,
+  tagline:       siteSettings?.footerTagline       || undefined,
+  links:         siteSettings?.footerLinks?.length  ? siteSettings.footerLinks : undefined,
+  email:         siteSettings?.contactEmail         || undefined,
+  phone:         siteSettings?.contactPhone         || undefined,
+  location:      siteSettings?.contactLocation      || undefined,
+  copyrightName: siteSettings?.footerCopyrightName  || undefined,
+};
 
-const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
-  { stepNumber: '01', title: 'Initial Consultation', description: 'We speak with you to understand your baby\'s current routine and your specific needs.' },
-  { stepNumber: '02', title: 'Custom Care Plan', description: 'Kareen Barrett designs a personalized care or sleep training strategy for your family.' },
-  { stepNumber: '03', title: 'Dedicated Support', description: 'Our expert team begins the care journey, providing continuous support and guidance.' },
-];
+// ── Hero ──────────────────────────────────────────────────────────────────────
+const heroHeadingRaw = cms?.heroHeading || "Nurturing Your | Little Wonders";
+// Split on | so editors can control line break
+const [heroLine1, heroLine2] = heroHeadingRaw.includes("|")
+  ? heroHeadingRaw.split("|").map((s: string) => s.trim())
+  : [heroHeadingRaw, null];
+
+const heroSubtext =
+  cms?.heroSubtext ||
+  "Professional, high-end newborn and infant care tailored to your family's needs. Trustworthy support for your baby's first steps.";
+
+const heroCtaPrimary    = cms?.heroCtaPrimary    || "Book an Appointment";
+const heroCtaPrimaryUrl = cms?.heroCtaPrimaryUrl || "/contact";
+const heroCtaSecondary    = cms?.heroCtaSecondary    || "Explore Services";
+const heroCtaSecondaryUrl = cms?.heroCtaSecondaryUrl || "/services";
+
+// ── Sections ─────────────────────────────────────────────────────────────────
+const servicesSectionTitle   = cms?.servicesSectionTitle   || "Our Excellence";
+const servicesSectionSubtext = cms?.servicesSectionSubtext || "We provide specialized care that goes beyond just watching your baby.";
+
+const processSectionTitle   = cms?.processSectionTitle   || "How It Works";
+const processSectionSubtext = cms?.processSectionSubtext || "A simple, stress-free process to get the care your family deserves.";
+
+const testimonialsSectionTitle   = cms?.testimonialsSectionTitle   || "From Our Families";
+const testimonialsSectionSubtext = cms?.testimonialsSectionSubtext || "Join the many Alberta families who have found peace of mind with us.";
+
+const faqSectionTitle   = cms?.faqSectionTitle   || "Common Questions";
+const faqSectionSubtext = cms?.faqSectionSubtext || "Everything you need to know about our nanny and newborn services.";
+
+const ctaHeading     = cms?.ctaHeading     || "Ready to give your baby the best care?";
+const ctaSubtext     = cms?.ctaSubtext     || "Schedule a consultation with Kareen Barrett today and experience the Toddler's Infantry difference.";
+const ctaButtonLabel = cms?.ctaButtonLabel || "Start Your Journey";
+const ctaButtonUrl   = cms?.ctaButtonUrl   || "/contact";
+
+// ── Repeatable content ────────────────────────────────────────────────────────
+const services =
+  fetchedServices.length > 0
+    ? fetchedServices
+    : [
+        {
+          title: "Newborn Care",
+          icon: "👶",
+          description: "Expert night and day care for your little ones.",
+        },
+        {
+          title: "Sleep Training",
+          icon: "🌙",
+          description:
+            "Gentle methods to help your baby sleep through the night.",
+        },
+        {
+          title: "Postpartum Support",
+          icon: "🫂",
+          description: "Emotional and physical support for new mothers.",
+        },
+      ];
+
+const testimonials =
+  fetchedTestimonials.length > 0
+    ? fetchedTestimonials
+    : [
+        {
+          quote:
+            "Kareen was a lifesaver for our firstborn. Her gentle approach to sleep training worked wonders in just a week!",
+          author: "Sarah & James",
+          location: "Calgary",
+        },
+        {
+          quote:
+            "Highly professional and incredibly nurturing. We felt 100% confident leaving our newborn in their hands.",
+          author: "Michael T.",
+          location: "Edmonton",
+        },
+      ];
+
+const faqItems =
+  fetchedFaq.length > 0
+    ? fetchedFaq
+    : [
+        {
+          question: "Is Kareen Barrett involved in every case?",
+          answer:
+            "Yes, Kareen personally oversees every care plan and conducts initial consultations to ensure the highest standards.",
+        },
+        {
+          question: "Do you provide overnight support?",
+          answer:
+            "Absolutely. We offer specialized overnight newborn care to help parents get the rest they need while ensuring the baby is safe and fed.",
+        },
+        {
+          question: "How do payments work?",
+          answer:
+            "We handle all payments offline. A $25 scheduling fee is required to book, with the remainder settled via direct invoice.",
+        },
+      ];
+
+const processSteps =
+  // 1. Inline steps inside Home Page document (preferred — edited in one place)
+  (cms?.processSteps?.length > 0)
+    ? cms.processSteps
+  // 2. Fallback: old separate processStep documents
+  : fetchedSteps.length > 0
+    ? fetchedSteps
+  // 3. Hardcoded fallback (shown when Sanity has nothing at all)
+    : [
+        {
+          stepNumber: "01",
+          title: "Initial Consultation",
+          description:
+            "We speak with you to understand your baby's current routine and your specific needs.",
+        },
+        {
+          stepNumber: "02",
+          title: "Custom Care Plan",
+          description:
+            "Kareen Barrett designs a personalized care or sleep training strategy for your family.",
+        },
+        {
+          stepNumber: "03",
+          title: "Dedicated Support",
+          description:
+            "Our expert team begins the care journey, providing continuous support and guidance.",
+        },
+      ];
 ---
 
 <Layout title="Toddler's Infantry | Premium Newborn Care">
-  <Navbar />
-  
+  <Navbar logoUrl={logoUrl ?? undefined} logoAlt={logoAlt} />
+
   <main>
     <!-- HERO SECTION -->
     <section class="hero">
       <div class="container hero-container">
         <div class="hero-content">
-          <h1 class="animate-up">Nurturing Your <br/><span class="text-accent">Little Wonders</span></h1>
-          <p class="animate-up delay-1">Professional, high-end newborn and infant care tailored to your family's needs. Trustworthy support for your baby's first steps.</p>
+          <h1 class="animate-up">
+            {heroLine1}{heroLine2 ? <Fragment><br /><span class="text-accent">{heroLine2}</span></Fragment> : ""}
+          </h1>
+          <p class="animate-up delay-1">{heroSubtext}</p>
           <div class="hero-btns animate-up delay-2">
-            <Button href="/contact">Book an Appointment</Button>
-            <Button href="/services" variant="outline">Explore Services</Button>
+            <Button href={heroCtaPrimaryUrl}>{heroCtaPrimary}</Button>
+            <Button href={heroCtaSecondaryUrl} variant="outline">{heroCtaSecondary}</Button>
           </div>
         </div>
         <div class="hero-image animate-fade">
           <div class="image-wrapper">
-             <img src="/logo.png" alt="Baby Care" class="hero-img-main" />
+            {
+              heroImageUrl
+                ? <img src={heroImageUrl} alt={heroImageAlt} class="hero-img-main" />
+                : <img src="/logo.png" alt={heroImageAlt} class="hero-img-main" />
+            }
           </div>
         </div>
       </div>
@@ -63,18 +205,23 @@ const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
     <section class="services-preview section-padding">
       <div class="container">
         <div class="section-title reveal">
-          <h2>Our Excellence</h2>
-          <p>We provide specialized care that goes beyond just watching your baby.</p>
+          <h2>{servicesSectionTitle}</h2>
+          <p>{servicesSectionSubtext}</p>
         </div>
-        
+
         <div class="services-grid">
-          {services.map((service, index) => (
-            <div class="service-card reveal" style={`--delay: ${index * 0.2}s`}>
-              <div class="service-icon">{service.icon}</div>
-              <h3>{service.title}</h3>
-              <p>{service.description || service.desc}</p>
-            </div>
-          ))}
+          {
+            services.map((service, index) => (
+              <div
+                class="service-card reveal"
+                style={`--delay: ${index * 0.2}s`}
+              >
+                <div class="service-icon">{service.icon}</div>
+                <h3>{service.title}</h3>
+                <p>{service.description || service.desc}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -83,17 +230,19 @@ const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
     <section class="process section-padding bg-light">
       <div class="container">
         <div class="section-title reveal">
-          <h2>How It Works</h2>
-          <p>A simple, stress-free process to get the care your family deserves.</p>
+          <h2>{processSectionTitle}</h2>
+          <p>{processSectionSubtext}</p>
         </div>
         <div class="process-grid">
-          {processSteps.map((step) => (
-            <div class="process-item reveal">
-              <span class="step-number">{step.stepNumber}</span>
-              <h3>{step.title}</h3>
-              <p>{step.description}</p>
-            </div>
-          ))}
+          {
+            processSteps.map((step) => (
+              <div class="process-item reveal">
+                <span class="step-number">{step.stepNumber}</span>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -102,16 +251,21 @@ const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
     <section class="testimonials section-padding">
       <div class="container">
         <div class="section-title reveal">
-          <h2>From Our Families</h2>
-          <p>Join the many Alberta families who have found peace of mind with us.</p>
+          <h2>{testimonialsSectionTitle}</h2>
+          <p>{testimonialsSectionSubtext}</p>
         </div>
         <div class="testimonials-grid">
-          {testimonials.map((t) => (
-            <div class="testimonial-card reveal">
-              <p>"{t.quote}"</p>
-              <div class="author">- {t.author}{t.location ? `, ${t.location}` : ''}</div>
-            </div>
-          ))}
+          {
+            testimonials.map((t) => (
+              <div class="testimonial-card reveal">
+                <p>"{t.quote}"</p>
+                <div class="author">
+                  - {t.author}
+                  {t.location ? `, ${t.location}` : ""}
+                </div>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -120,16 +274,18 @@ const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
     <section class="faq section-padding bg-light">
       <div class="container">
         <div class="section-title reveal">
-          <h2>Common Questions</h2>
-          <p>Everything you need to know about our nanny and newborn services.</p>
+          <h2>{faqSectionTitle}</h2>
+          <p>{faqSectionSubtext}</p>
         </div>
         <div class="faq-list">
-          {faqItems.map((item) => (
-            <div class="faq-item reveal">
-              <h3>{item.question}</h3>
-              <p>{item.answer}</p>
-            </div>
-          ))}
+          {
+            faqItems.map((item) => (
+              <div class="faq-item reveal">
+                <h3>{item.question}</h3>
+                <p>{item.answer}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -138,24 +294,28 @@ const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
     <section class="cta-section reveal section-padding">
       <div class="container">
         <div class="cta-box">
-          <h2>Ready to give your baby the best care?</h2>
-          <p>Schedule a consultation with Kareen Barrett today and experience the Toddler's Infantry difference.</p>
+          <h2>{ctaHeading}</h2>
+          <p>{ctaSubtext}</p>
           <div class="cta-btn">
-            <Button href="/contact" variant="secondary">Start Your Journey</Button>
+            <Button href={ctaButtonUrl} variant="secondary">{ctaButtonLabel}</Button>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <Footer />
+  <Footer {...footerProps} />
 </Layout>
 
 <style>
   /* HERO */
   .hero {
     padding: calc(var(--navbar-height) + var(--space-lg)) 0 var(--space-xl);
-    background: linear-gradient(135deg, var(--color-secondary) 0%, #FFFFFF 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-secondary) 0%,
+      #ffffff 100%
+    );
     overflow: hidden;
   }
 
@@ -215,8 +375,12 @@ const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
   }
 
   @keyframes blob {
-    0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
-    100% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }
+    0% {
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+    100% {
+      border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+    }
   }
 
   /* SERVICES PREVIEW */
@@ -408,31 +572,31 @@ const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   gsap.registerPlugin(ScrollTrigger);
 
-  document.addEventListener('astro:page-load', () => {
+  document.addEventListener("astro:page-load", () => {
     // Hero Animations
-    gsap.from('.animate-up', {
+    gsap.from(".animate-up", {
       y: 50,
       opacity: 0,
       duration: 1,
       stagger: 0.2,
-      ease: 'power4.out'
+      ease: "power4.out",
     });
 
-    gsap.from('.animate-fade', {
+    gsap.from(".animate-fade", {
       opacity: 0,
       duration: 1.5,
       delay: 0.5,
-      ease: 'power2.out'
+      ease: "power2.out",
     });
 
     // Reveal on Scroll
-    const reveals = document.querySelectorAll('.reveal');
-    
+    const reveals = document.querySelectorAll(".reveal");
+
     // Hide initially via JS for animation
     gsap.set(reveals, { opacity: 0, y: 30 });
 
@@ -440,13 +604,13 @@ const processSteps = fetchedSteps.length > 0 ? fetchedSteps : [
       gsap.to(el, {
         scrollTrigger: {
           trigger: el,
-          start: 'top 90%',
+          start: "top 90%",
         },
         y: 0,
         opacity: 1,
         duration: 1,
-        ease: 'power3.out',
-        clearProps: 'all' // Clean up after animation
+        ease: "power3.out",
+        clearProps: "all", // Clean up after animation
       });
     });
   });
