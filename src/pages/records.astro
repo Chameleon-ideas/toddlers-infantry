@@ -1,0 +1,246 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import { getSiteSettings, getContactEntries, urlFor } from "../utils/sanity";
+
+const [siteSettings, entries] = await Promise.all([
+  getSiteSettings(),
+  getContactEntries(),
+]);
+
+const logoUrl = siteSettings?.logo
+  ? urlFor(siteSettings.logo).width(300).auto("format").url()
+  : null;
+const logoAlt = siteSettings?.logo?.alt || "Toddler's Infantry Logo";
+
+const footerProps = {
+  logoUrl: logoUrl ?? undefined,
+  logoAlt,
+  tagline: siteSettings?.footerTagline || undefined,
+  links: siteSettings?.footerLinks?.length ? siteSettings.footerLinks : undefined,
+  email: siteSettings?.contactEmail || undefined,
+  phone: siteSettings?.contactPhone || undefined,
+  location: siteSettings?.contactLocation || undefined,
+  copyrightName: siteSettings?.footerCopyrightName || undefined,
+};
+
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+---
+
+<Layout title="Records | Toddler's Infantry">
+  <Navbar logoUrl={logoUrl ?? undefined} logoAlt={logoAlt} />
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1 class="reveal">Contact Records</h1>
+        <p class="reveal">View and manage form submissions from families.</p>
+      </div>
+    </section>
+
+    <section class="records-content">
+      <div class="container">
+        {entries.length === 0 ? (
+          <div class="no-records reveal">
+            <div class="icon">📁</div>
+            <h3>No records found yet</h3>
+            <p>Submissions from the contact form will appear here once received.</p>
+          </div>
+        ) : (
+          <div class="records-grid">
+            {entries.map((entry: any) => (
+              <div class="record-card reveal">
+                <div class="record-header">
+                  <div class="badge" data-status={entry.status}>{entry.status || 'new'}</div>
+                  <span class="date">{formatDate(entry.submittedAt)}</span>
+                </div>
+                
+                <div class="record-body">
+                  <h3>{entry.name}</h3>
+                  <div class="meta-item">
+                    <strong>📧 Email:</strong> <a href={`mailto:${entry.email}`}>{entry.email}</a>
+                  </div>
+                  {entry.phone && (
+                    <div class="meta-item">
+                      <strong>📞 Phone:</strong> <a href={`tel:${entry.phone}`}>{entry.phone}</a>
+                    </div>
+                  )}
+                  <div class="meta-item">
+                    <strong>👶 Service:</strong> <span>{entry.service}</span>
+                  </div>
+                  
+                  <div class="message-box">
+                    <strong>Message:</strong>
+                    <p>{entry.message || 'No additional message provided.'}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer {...footerProps} />
+</Layout>
+
+<style>
+  .records-content {
+    padding: var(--space-xl) 0;
+    background: var(--color-bg-light);
+    min-height: 60vh;
+  }
+
+  .no-records {
+    text-align: center;
+    padding: var(--space-xl) 0;
+    max-width: 400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  }
+
+  .no-records .icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .no-records h3 {
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .records-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .record-card {
+    background: white;
+    border-radius: 24px;
+    padding: var(--space-lg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    transition: transform 0.3s ease;
+  }
+
+  .record-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: var(--space-sm);
+  }
+
+  .badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: #e3f2fd;
+    color: #1976d2;
+  }
+
+  .badge[data-status="completed"] {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  .badge[data-status="progress"] {
+    background: #fff3e0;
+    color: #ef6c00;
+  }
+
+  .date {
+    font-size: 13px;
+    color: #888;
+  }
+
+  .record-body h3 {
+    margin-bottom: var(--space-sm);
+    color: var(--color-primary);
+  }
+
+  .meta-item {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #444;
+  }
+
+  .meta-item strong {
+    color: #000;
+  }
+
+  .meta-item a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .message-box {
+    margin-top: var(--space-md);
+    padding: var(--space-md);
+    background: #fdfdfd;
+    border-left: 3px solid var(--color-primary);
+    border-radius: 4px;
+  }
+
+  .message-box strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .message-box p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+    white-space: pre-wrap;
+  }
+
+  @media (max-width: 768px) {
+    .records-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("astro:page-load", () => {
+    const reveals = document.querySelectorAll(".reveal");
+    gsap.set(reveals, { opacity: 0, y: 20 });
+    reveals.forEach((el) => {
+      gsap.to(el, {
+        scrollTrigger: { trigger: el, start: "top 95%" },
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+      });
+    });
+  });
+</script>

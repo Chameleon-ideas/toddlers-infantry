@@ -1,16 +1,28 @@
-import { sanityClient } from "sanity:client";
+import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
+
+// ── Hardcoded config for reliability ──────────────────────────────────────────
+const clientConfig = {
+  projectId: 'z81qmmi3',
+  dataset: 'production',
+  apiVersion: '2025-01-28',
+  token: 'skaKz4z3SL5MgCBk2oT7dGNxaQ3quvyuHnFCf0gKcyP0ujPDAoeRKXYqSMLGZ8RdvHJcNhaDLFfGq0kIQ14bVgJGWUrfyjrFt9m3P2ox6b72n9ptA8RpcvVtLjQh5OHtpWeDrNaUXILvoPlKDPLONHh7d4yxUBqw7CVa4JLqf00QdqLSYXUT',
+  useCdn: false, // Set to false to see updates immediately
+};
+
+export const sanityClient = createClient(clientConfig);
 
 // ── Image URL builder ─────────────────────────────────────────────────────────
 const builder = imageUrlBuilder(sanityClient);
 
 /**
  * Convert a Sanity image reference object into an optimised CDN URL.
- * Usage: urlFor(image).width(800).url()
  */
 export function urlFor(source: any) {
   return builder.image(source);
 }
+
+// ── Fetchers ──────────────────────────────────────────────────────────────────
 
 export async function getServices() {
   return sanityClient.fetch(`*[_type == "service"] | order(category asc, order asc, title asc)`);
@@ -57,4 +69,8 @@ export async function getContactPage() {
 
 export async function getAboutPage() {
   return sanityClient.fetch(`*[_type == "aboutPage"][0]`);
+}
+
+export async function getContactEntries() {
+  return sanityClient.fetch(`*[_type == "contactEntry"] | order(submittedAt desc)`);
 }

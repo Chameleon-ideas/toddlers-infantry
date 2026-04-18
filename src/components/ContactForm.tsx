@@ -3,10 +3,33 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const ContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setIsPending(true);
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.message || 'Something went wrong');
+      }
+
+      setIsSubmitted(true);
+    } catch (err: any) {
+      setError(err.message || 'Failed to send message. Please try again.');
+    } finally {
+      setIsPending(false);
+    }
   };
 
   const containerVariants = {
@@ -37,6 +60,17 @@ const ContactForm = () => {
             onSubmit={handleSubmit}
             className="appointment-form"
           >
+            {error && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="error-notice"
+                style={{ color: '#D32F2F', backgroundColor: '#FFEBEE', padding: '12px', borderRadius: '8px', marginBottom: '20px', fontSize: '0.9rem', fontWeight: 'bold' }}
+              >
+                {error}
+              </motion.div>
+            )}
+
             <motion.div variants={itemVariants} className="form-group">
               <label htmlFor="name" style={{ color: '#000000', fontWeight: 'bold', display: 'block' }}>Full Name</label>
               <input type="text" id="name" name="name" placeholder="E.g. Jane Doe" required />
@@ -76,8 +110,10 @@ const ContactForm = () => {
                 whileTap={{ scale: 0.98 }}
                 type="submit" 
                 className="submit-btn"
+                disabled={isPending}
+                style={{ opacity: isPending ? 0.7 : 1, cursor: isPending ? 'not-allowed' : 'pointer' }}
               >
-                Send Request
+                {isPending ? 'Sending...' : 'Send Request'}
               </motion.button>
             </motion.div>
           </motion.form>
