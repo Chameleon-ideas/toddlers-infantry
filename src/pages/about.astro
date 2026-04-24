@@ -213,13 +213,20 @@ const bioCtaUrl = cms?.bioCtaUrl || "/contact";
 
   .image-accent {
     background: var(--color-primary);
-    padding: var(--space-xl);
     border-radius: 30% 70% 30% 70% / 50% 50% 50% 50%;
+    width: clamp(350px, 40vw, 500px);
+    height: clamp(350px, 40vw, 500px);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .image-accent img {
-    max-width: 300px;
-    height: auto;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
   }
 
@@ -295,12 +302,14 @@ const bioCtaUrl = cms?.bioCtaUrl || "/contact";
     }
 
     .image-accent {
-      padding: var(--space-lg);
+      width: 280px;
+      height: 280px;
       border-radius: 30px;
     }
 
     .image-accent img {
-      max-width: 200px;
+      width: 100%;
+      height: 100%;
     }
 
     .team-section {
@@ -330,11 +339,8 @@ const bioCtaUrl = cms?.bioCtaUrl || "/contact";
     }
 
     .image-accent {
-      padding: var(--space-md);
-    }
-
-    .image-accent img {
-      max-width: 160px;
+      width: 220px;
+      height: 220px;
     }
   }
 </style>
