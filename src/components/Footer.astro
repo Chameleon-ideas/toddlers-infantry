@@ -113,7 +113,7 @@ const currentYear = new Date().getFullYear();
   }
 
   h3 {
-    font-size: 1.2rem;
+    font-size: var(--text-lg);
     margin-bottom: var(--space-md);
     color: var(--color-text);
   }
@@ -142,7 +142,7 @@ const currentYear = new Date().getFullYear();
     padding-top: var(--space-md);
     text-align: center;
     color: #999;
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     line-height: 1.8;
   }
 
@@ -160,6 +160,15 @@ const currentYear = new Date().getFullYear();
     .footer-grid {
       grid-template-columns: 1fr;
       gap: var(--space-lg);
+    }
+  }
+
+  @media (max-width: 480px) {
+    footer {
+      padding: var(--space-lg) 0 var(--space-sm);
+    }
+    .footer-brand p {
+      max-width: 100%;
     }
   }
 </style>

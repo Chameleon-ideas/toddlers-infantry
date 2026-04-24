@@ -117,7 +117,7 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
   }
 
   .category-title {
-    font-size: 2rem;
+    font-size: var(--text-3xl);
     color: var(--color-primary);
     margin-bottom: var(--space-lg);
     border-bottom: 2px solid var(--color-secondary);
@@ -149,7 +149,7 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
   }
 
   .service-info h3 {
-    font-size: 1.8rem;
+    font-size: var(--text-2xl);
     margin-bottom: var(--space-xs);
     color: var(--color-primary);
   }
@@ -169,7 +169,7 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
 
   .price {
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: var(--text-lg);
     color: #000000;
   }
 
@@ -192,6 +192,20 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
     .service-meta {
       text-align: center;
       align-items: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .service-group {
+      padding: var(--space-lg) 0;
+    }
+    .service-item {
+      padding: var(--space-md);
+      border-radius: 16px;
+    }
+    .note-box {
+      padding: var(--space-md);
+      border-radius: 0 16px 16px 0;
     }
   }
 </style>

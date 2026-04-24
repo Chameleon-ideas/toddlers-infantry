@@ -119,13 +119,13 @@ const bookingNoticeBody    = pageData?.bookingNoticeBody
   }
 
   .mega-hero h1 {
-    font-size: 4rem !important;
+    font-size: var(--text-5xl) !important;
     margin-bottom: 10px !important;
     color: #FFFFFF !important;
   }
 
   .mega-hero p {
-    font-size: 1.25rem !important;
+    font-size: var(--text-md) !important;
     max-width: 600px;
     margin: 0 auto !important;
     color: #FFFFFF !important;
@@ -150,7 +150,7 @@ const bookingNoticeBody    = pageData?.bookingNoticeBody
   }
 
   .details-pane h2 {
-    font-size: 2.5rem;
+    font-size: var(--text-3xl);
     color: #6B7C67;
     margin-bottom: 20px;
   }
@@ -170,7 +170,7 @@ const bookingNoticeBody    = pageData?.bookingNoticeBody
 
   .item .label {
     display: block;
-    font-size: 0.9rem;
+    font-size: var(--text-xs);
     text-transform: uppercase;
     color: #6B7C67;
     font-weight: 700;
@@ -178,7 +178,7 @@ const bookingNoticeBody    = pageData?.bookingNoticeBody
   }
 
   .item .value {
-    font-size: 1.4rem;
+    font-size: var(--text-xl);
     font-weight: 700;
     color: #000000 !important;
   }
@@ -239,7 +239,7 @@ const bookingNoticeBody    = pageData?.bookingNoticeBody
     border: none !important;
     border-radius: 50px !important;
     font-weight: 700 !important;
-    font-size: 1.1rem !important;
+    font-size: var(--text-md) !important;
     cursor: pointer !important;
     transition: all 0.3s ease !important;
     box-shadow: 0 10px 25px rgba(107, 124, 103, 0.25) !important;
@@ -260,7 +260,7 @@ const bookingNoticeBody    = pageData?.bookingNoticeBody
     opacity: 1 !important;
     display: block !important;
     margin-bottom: 10px !important;
-    font-size: 0.95rem !important;
+    font-size: var(--text-sm) !important;
   }
 
   @media (max-width: 992px) {
@@ -274,6 +274,35 @@ const bookingNoticeBody    = pageData?.bookingNoticeBody
     .details-pane {
       padding-top: 0;
       text-align: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mega-hero {
+      padding: 100px 0 60px !important;
+    }
+    .form-pane .card {
+      padding: 40px 24px !important;
+      border-radius: 24px;
+    }
+    .contact-items {
+      margin: 24px 0;
+    }
+    .item {
+      margin-bottom: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .mega-hero {
+      padding: 80px 0 40px !important;
+    }
+    .form-pane .card {
+      padding: 24px 16px !important;
+      border-radius: 20px;
+    }
+    .booking-notice {
+      padding: 20px;
     }
   }
 </style>
