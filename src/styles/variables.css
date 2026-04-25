@@ -1,11 +1,11 @@
 :root {
   /* BRAND COLORS - Earthy Premium (Punchier) */
-  --color-primary: #6B7C67;
-  /* Deeper Forest Sage */
+  --color-primary: #E84164;
+  /* Vibrant Berry Pink */
   --color-secondary: #F5F1E9;
   /* Richer Warm Cream */
-  --color-accent: #C1664C;
-  /* Vibrant Earthy Terracotta */
+  --color-accent: #69217A;
+  /* Deep Royal Purple */
   --color-text: #1A1A1A;
   /* Stronger Charcoal */
   --color-white: #FFFFFF;
@@ -77,7 +77,7 @@ h6 {
 
 .bg-pattern {
   background-color: var(--color-bg-light);
-  background-image: radial-gradient(#6B7C67 1px, transparent 1px);
+  background-image: radial-gradient(#E84164 1px, transparent 1px);
   background-size: 32px 32px;
   background-position: 0 0;
   opacity: 0.12;
@@ -87,8 +87,8 @@ h6 {
 /* GLOBAL SECTION STYLES */
 .page-header {
   padding: calc(var(--navbar-height) + var(--space-lg)) 0 var(--space-lg);
-  background: #6B7C67 !important;
-  /* Sage */
+  background: #E84164 !important;
+  /* Pink */
   color: #FFFFFF !important;
   text-align: center;
   position: relative;
