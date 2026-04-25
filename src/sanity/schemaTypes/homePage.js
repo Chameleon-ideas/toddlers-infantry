@@ -59,7 +59,7 @@ export const homePageType = {
           name: 'alt',
           title: 'Alt Text',
           type: 'string',
-          description: 'Describe the image for screen readers (e.g. "Kareen Barrett caring for a newborn")',
+          description: 'Describe the image for screen readers (e.g. "Kareen caring for a newborn")',
           initialValue: 'Baby Care',
         },
       ],
@@ -174,7 +174,7 @@ export const homePageType = {
       type: 'text',
       rows: 2,
       initialValue:
-        "Schedule a consultation with Kareen Barrett today and experience the Toddler's Infantry difference.",
+        "Schedule a consultation with Kareen today and experience the Toddler's Infantry difference.",
     },
     {
       name: 'ctaButtonLabel',
