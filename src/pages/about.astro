@@ -56,7 +56,6 @@ const aboutImageUrl = cms?.aboutImage
       .url()
   : null;
 const aboutImageAlt = cms?.aboutImage?.alt || "Caregiver with baby";
-
 // ── Approach Items ────────────────────────────────────────────────────────────
 const approachItems =
   cms?.approachItems?.length > 0
@@ -129,7 +128,7 @@ const bioCtaUrl = cms?.bioCtaUrl || "/contact";
                 aboutImageUrl ? (
                   <img src={aboutImageUrl} alt={aboutImageAlt} loading="lazy" />
                 ) : (
-                  <img src="/logo.png" alt={aboutImageAlt} loading="lazy" />
+                  <img src="/about.png" alt={aboutImageAlt} loading="lazy" />
                 )
               }
             </div>
@@ -213,20 +212,13 @@ const bioCtaUrl = cms?.bioCtaUrl || "/contact";
 
   .image-accent {
     background: var(--color-primary);
+    padding: var(--space-xl);
     border-radius: 30% 70% 30% 70% / 50% 50% 50% 50%;
-    width: clamp(350px, 40vw, 500px);
-    height: clamp(350px, 40vw, 500px);
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .image-accent img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 300px;
+    height: auto;
     display: block;
   }
 
@@ -236,7 +228,7 @@ const bioCtaUrl = cms?.bioCtaUrl || "/contact";
   }
 
   .text-green {
-    color: #E84164;
+    color: #6b7c67;
   }
 
   .team-section {
@@ -302,14 +294,12 @@ const bioCtaUrl = cms?.bioCtaUrl || "/contact";
     }
 
     .image-accent {
-      width: 280px;
-      height: 280px;
+      padding: var(--space-lg);
       border-radius: 30px;
     }
 
     .image-accent img {
-      width: 100%;
-      height: 100%;
+      max-width: 200px;
     }
 
     .team-section {
@@ -339,8 +329,11 @@ const bioCtaUrl = cms?.bioCtaUrl || "/contact";
     }
 
     .image-accent {
-      width: 220px;
-      height: 220px;
+      padding: var(--space-md);
+    }
+
+    .image-accent img {
+      max-width: 160px;
     }
   }
 </style>
