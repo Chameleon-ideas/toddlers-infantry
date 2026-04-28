@@ -95,6 +95,7 @@ const ContactForm = () => {
                   <option value="Newborn Care">Newborn Care Specialist</option>
                   <option value="Sleep Training">Sleep Training</option>
                   <option value="Postpartum Support">Postpartum Support</option>
+                  <option value="Travel Nanny">Travel Nanny</option>
                 </select>
               </div>
             </motion.div>
@@ -126,7 +127,7 @@ const ContactForm = () => {
           >
             <div className="success-icon">✨</div>
             <h2>Request Received!</h2>
-            <p>Kareen Barrett will reach out personally within 24 hours to discuss your needs and confirm availability.</p>
+            <p>Kareen will reach out personally within 24 hours to discuss your needs and confirm availability.</p>
             <button 
               onClick={() => setIsSubmitted(false)}
               className="back-btn"

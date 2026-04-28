@@ -53,7 +53,7 @@ export const contactPageType = {
       type: 'text',
       rows: 3,
       description: 'Full text of the booking notice. Contact Info → Booking Fee Note (in Site Settings) is also available as a source.',
-      initialValue: 'Appointments require a $25 booking fee. Details for offline payment will be sent upon form submission by Kareen Barrett.',
+      initialValue: 'Appointments require a $25 booking fee. Details for offline payment will be sent upon form submission by Kareen.',
     },
   ],
 }

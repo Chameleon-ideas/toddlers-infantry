@@ -89,7 +89,7 @@ const homePage = {
       _key: 'step-02',
       stepNumber: '02',
       title: 'Custom Care Plan',
-      description: 'Kareen Barrett designs a personalized care or sleep training strategy for your family.',
+      description: 'Kareen designs a personalized care or sleep training strategy for your family.',
     },
     {
       _key: 'step-03',
@@ -106,7 +106,7 @@ const homePage = {
   faqSectionSubtext: 'Everything you need to know about our nanny and newborn services.',
   // CTA
   ctaHeading:     'Ready to give your baby the best care?',
-  ctaSubtext:     "Schedule a consultation with Kareen Barrett today and experience the Toddler's Infantry difference.",
+  ctaSubtext:     "Schedule a consultation with Kareen today and experience the Toddler's Infantry difference.",
   ctaButtonLabel: 'Start Your Journey',
   ctaButtonUrl:   '/contact',
 };
@@ -129,17 +129,17 @@ const contactPage = {
   detailsHeading: 'Contact Details',
   detailsSubtext:  'If you have urgent questions, feel free to reach out directly via email or phone.',
   bookingNoticeHeading: 'Note on Payments',
-  bookingNoticeBody:    'Appointments require a $25 booking fee. Details for offline payment will be sent upon form submission by Kareen Barrett.',
+  bookingNoticeBody:    'Appointments require a $25 booking fee. Details for offline payment will be sent upon form submission by Kareen.',
 };
 
 const aboutPage = {
   _type: 'aboutPage',
   // Page Header
   heroHeading: 'Our Story & Approach',
-  heroSubtext:  'Dedicated to providing the most nurturing and professional newborn care in Alberta, Canada.',
+  heroSubtext:  'Dedicated to providing the most nurturing and professional newborn care in Alberta.',
   // About section
   aboutHeading:    'Nurturing the Future, One Small Step at a Time',
-  aboutParagraph1: "At Toddler's Infantry, we believe that the first months and years of a child's life are the most critical. Founded by Kareen Barrett, our agency was born out of a passion for supporting new families through the beautiful yet challenging transition of early parenthood.",
+  aboutParagraph1: "At Toddler's Infantry, we believe that the first months and years of a child's life are the most critical. Founded by Kareen, our agency was born out of a passion for supporting new families through the beautiful yet challenging transition of early parenthood.",
   aboutParagraph2: 'Our approach is centered on trust, professionalism, and personalized care. We don\'t just provide "babysitting"; we provide specialized newborn care that focuses on developmental milestones, sleep health, and physical support for both the baby and the parents.',
   // Approach items
   approachItems: [
@@ -157,9 +157,9 @@ const aboutPage = {
     },
   ],
   // Bio / Team section
-  teamSectionHeading: 'Meet Kareen Barrett',
+  teamSectionHeading: 'Meet Kareen',
   teamSectionSubtext: "The vision and heart behind Toddler's Infantry.",
-  bioText:     'Kareen Barrett has over 15 years of experience in newborn and baby care. Her journey started as a neonatal nurse and evolved into a specialized consultancy for sleep training and postpartum support. She leads a team of dedicated professionals who share her mission: to ensure every family feels confident and every baby feels loved.',
+  bioText:     'Kareen has over 15 years of experience in newborn and baby care. Her journey started as a neonatal nurse and evolved into a specialized consultancy for sleep training and postpartum support. She leads a team of dedicated professionals who share her mission: to ensure every family feels confident and every baby feels loved.',
   bioCtaLabel: 'Book a consultation with Kareen',
   bioCtaUrl:   '/contact',
 };
@@ -197,6 +197,14 @@ const services = [
     price: 'From $30/hr',
     category: 'Essential Care',
   },
+  {
+    _type: 'service',
+    title: 'Travel Nanny',
+    icon: '✈️',
+    description: 'Expert care for your vacations, primarily in winter (though summer is also possible).',
+    price: 'Custom Quote',
+    category: 'Specialized Support',
+  },
 ];
 
 const testimonials = [
@@ -217,7 +225,7 @@ const testimonials = [
 const faqItems = [
   {
     _type: 'faqItem',
-    question: 'Is Kareen Barrett involved in every case?',
+    question: 'Is Kareen involved in every case?',
     answer: 'Yes, Kareen personally oversees every care plan and conducts initial consultations to ensure the highest standards.',
   },
   {
@@ -243,7 +251,7 @@ const processSteps = [
     _type: 'processStep',
     stepNumber: '02',
     title: 'Custom Care Plan',
-    description: 'Kareen Barrett designs a personalized care or sleep training strategy for your family.',
+    description: 'Kareen designs a personalized care or sleep training strategy for your family.',
   },
   {
     _type: 'processStep',
