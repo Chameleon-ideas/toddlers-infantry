@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import ThemeSwitcher from '../components/ThemeSwitcher.astro';
 import '../styles/variables.css';
 
 interface Props {
@@ -29,6 +30,7 @@ const { title, description = "Toddler's Infantry - Professional Newborn and Baby
   </head>
   <body>
     <slot />
+    <ThemeSwitcher />
 
     <style is:global>
       :root {

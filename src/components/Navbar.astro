@@ -18,9 +18,10 @@ const navLinks = [
   <div class="container">
     <a href="/" class="logo" aria-label="Toddler's Infantry Home">
       <img
-        src={logoUrl || "/logo.png"}
+        src={logoUrl || "/red-logo.svg"}
         alt={logoAlt}
-        width="150"
+        class="theme-logo"
+        width="80"
         height="auto"
       />
     </a>
@@ -73,14 +74,14 @@ const navLinks = [
   }
 
   .logo img {
-    height: 100px;
+    height: 60px;
     width: auto;
     object-fit: contain;
   }
 
   @media (max-width: 620px) {
     .logo img {
-      height: 60px;
+      height: 30px;
     }
   }
 

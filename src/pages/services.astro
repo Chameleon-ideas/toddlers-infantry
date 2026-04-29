@@ -1,9 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import Button from '../components/common/Button.astro';
-import { getServicesByCategory, getServicesPage, getSiteSettings, urlFor } from '../utils/sanity';
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/common/Button.astro";
+import {
+  getServicesByCategory,
+  getServicesPage,
+  getSiteSettings,
+  urlFor,
+} from "../utils/sanity";
 
 const [fetched, pageData, siteSettings] = await Promise.all([
   getServicesByCategory(),
@@ -13,61 +18,98 @@ const [fetched, pageData, siteSettings] = await Promise.all([
 
 // ── Logo / Navbar ─────────────────────────────────────────────────────────────
 const logoUrl = siteSettings?.logo
-  ? urlFor(siteSettings.logo).width(300).auto('format').url()
+  ? urlFor(siteSettings.logo).width(300).auto("format").url()
   : null;
 const logoAlt = siteSettings?.logo?.alt || "Toddler's Infantry Logo";
 
 // ── Footer ────────────────────────────────────────────────────────────────────
 const footerProps = {
-  logoUrl:       logoUrl ?? undefined,
+  logoUrl: logoUrl ?? undefined,
   logoAlt,
-  tagline:       siteSettings?.footerTagline      || undefined,
-  links:         siteSettings?.footerLinks?.length ? siteSettings.footerLinks : undefined,
-  email:         siteSettings?.contactEmail        || undefined,
-  phone:         siteSettings?.contactPhone        || undefined,
-  location:      siteSettings?.contactLocation     || undefined,
+  tagline: siteSettings?.footerTagline || undefined,
+  links: siteSettings?.footerLinks?.length
+    ? siteSettings.footerLinks
+    : undefined,
+  email: siteSettings?.contactEmail || undefined,
+  phone: siteSettings?.contactPhone || undefined,
+  location: siteSettings?.contactLocation || undefined,
   copyrightName: siteSettings?.footerCopyrightName || undefined,
 };
 
 // ── Page header ───────────────────────────────────────────────────────────────
-const pageHeading = pageData?.pageHeading || 'Exceptional Care Services';
-const pageSubtext  = pageData?.pageSubtext  || 'From newborn support to developmental guidance, we offer specialized services tailored to your family.';
+const pageHeading = pageData?.pageHeading || "Exceptional Care Services";
+const pageSubtext =
+  pageData?.pageSubtext ||
+  "From newborn support to developmental guidance, we offer specialized services tailored to your family.";
 
 // ── Booking note ──────────────────────────────────────────────────────────────
-const bookingIcon    = pageData?.bookingNoteIcon    || '📅';
-const bookingHeading = pageData?.bookingNoteHeading || 'Booking Information';
-const bookingBody    = pageData?.bookingNoteBody
-  || 'Please note that a $25 non-refundable booking fee is required at the time of scheduling an appointment. This fee ensures your slot is reserved and is handled through our offline payment process.';
+const bookingIcon = pageData?.bookingNoteIcon || "📅";
+const bookingHeading = pageData?.bookingNoteHeading || "Booking Information";
+const bookingBody =
+  pageData?.bookingNoteBody ||
+  "Please note that a $25 non-refundable booking fee is required at the time of scheduling an appointment. This fee ensures your slot is reserved and is handled through our offline payment process.";
 
 // ── Service card CTA ──────────────────────────────────────────────────────────
-const serviceCtaLabel = pageData?.serviceCtaLabel || 'Learn More';
-const serviceCtaUrl   = pageData?.serviceCtaUrl   || '/contact';
+const serviceCtaLabel = pageData?.serviceCtaLabel || "Learn More";
+const serviceCtaUrl = pageData?.serviceCtaUrl || "/contact";
 
 // ── Service categories (with fallback) ───────────────────────────────────────
 const fallback = [
   {
-    category: 'Essential Care',
+    category: "Essential Care",
     items: [
-      { title: 'Newborn Care Specialist', price: 'From $35/hr', description: 'Specialized 24/7 or overnight care focusing on feeding, hygiene, and development for newborns.' },
-      { title: 'Daytime Nanny Services',  price: 'From $30/hr', description: 'Engaging and educational daytime care for infants and toddlers in the comfort of your home.' },
+      {
+        title: "Newborn Care Specialist",
+        price: "From $35/hr",
+        description:
+          "Specialized 24/7 or overnight care focusing on feeding, hygiene, and development for newborns.",
+      },
+      {
+        title: "Daytime Nanny Services",
+        price: "From $30/hr",
+        description:
+          "Engaging and educational daytime care for infants and toddlers in the comfort of your home.",
+      },
+      {
+        title: "Postpartum Doula",
+        price: "From $45/hr",
+        description:
+          "Non-medical support providing physical, emotional, and informational help to mothers after birth.",
+      },
     ],
   },
   {
-    category: 'Specialized Support',
+    category: "Specialized Support",
     items: [
-      { title: 'Sleep Training',    price: '$500 Flat Fee', description: 'A comprehensive 2-week program designed to establish healthy sleep patterns for infants (4+ months).' },
-      { title: 'Postpartum Doula', price: 'From $45/hr',   description: 'Non-medical support providing physical, emotional, and informational help to mothers after birth.' },
-      { title: 'Travel Nanny',      price: 'Custom Quote',  description: 'Expert care for your vacations, primarily available in winter (though summer is also possible).' },
+      {
+        title: "Travel Care",
+        price: "Custom Quote",
+        description:
+          "Expert care and support for your family during vacations and trips.",
+      },
+      {
+        title: "Specialized care for Twin",
+        price: "Custom Quote",
+        description:
+          "Tailored and experienced newborn care specifically for twins.",
+      },
+      {
+        title: "High-demand schedules",
+        price: "Custom Quote",
+        description:
+          "Flexible care solutions designed for busy and high-demand family routines.",
+      },
     ],
   },
 ];
 
 const serviceCategories = fetched.length > 0 ? fetched : fallback;
+// const serviceCategories = fallback;
 ---
 
 <Layout title="Services Portfolio | Toddler's Infantry">
   <Navbar logoUrl={logoUrl ?? undefined} logoAlt={logoAlt} />
-  
+
   <main>
     <section class="page-header">
       <div class="container">
@@ -76,27 +118,34 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
       </div>
     </section>
 
-    {serviceCategories.map((cat, groupIndex) => (
-      <section class="service-group">
-        <div class="container">
-          <h2 class="category-title reveal">{cat.category}</h2>
-          <div class="services-list">
-            {cat.items.map((item: any, index: number) => (
-              <div class="service-item reveal" style={`--delay: ${index * 0.1}s`}>
-                <div class="service-info">
-                  <h3>{item.title}</h3>
-                  <p>{item.description || item.desc}</p>
+    {
+      serviceCategories.map((cat, groupIndex) => (
+        <section class="service-group">
+          <div class="container">
+            <h2 class="category-title reveal">{cat.category}</h2>
+            <div class="services-list">
+              {cat.items.map((item: any, index: number) => (
+                <div
+                  class="service-item reveal"
+                  style={`--delay: ${index * 0.1}s`}
+                >
+                  <div class="service-info">
+                    <h3>{item.title}</h3>
+                    <p>{item.description || item.desc}</p>
+                  </div>
+                  <div class="service-meta">
+                    {item.price && <span class="price">{item.price}</span>}
+                    <Button href={serviceCtaUrl} variant="outline">
+                      {serviceCtaLabel}
+                    </Button>
+                  </div>
                 </div>
-                <div class="service-meta">
-                  {item.price && <span class="price">{item.price}</span>}
-                  <Button href={serviceCtaUrl} variant="outline">{serviceCtaLabel}</Button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-    ))}
+        </section>
+      ))
+    }
 
     <section class="payment-note reveal">
       <div class="container">
@@ -110,7 +159,6 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
 
   <Footer {...footerProps} />
 </Layout>
-
 
 <style>
   .service-group {
@@ -212,14 +260,14 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   gsap.registerPlugin(ScrollTrigger);
 
-  document.addEventListener('astro:page-load', () => {
-    const reveals = document.querySelectorAll('.reveal');
-    
+  document.addEventListener("astro:page-load", () => {
+    const reveals = document.querySelectorAll(".reveal");
+
     // Hide initially via JS for animation
     gsap.set(reveals, { opacity: 0, y: 30 });
 
@@ -227,13 +275,13 @@ const serviceCategories = fetched.length > 0 ? fetched : fallback;
       gsap.to(el, {
         scrollTrigger: {
           trigger: el,
-          start: 'top 95%',
+          start: "top 95%",
         },
         y: 0,
         opacity: 1,
         duration: 0.8,
-        ease: 'power3.out',
-        clearProps: 'all'
+        ease: "power3.out",
+        clearProps: "all",
       });
     });
   });

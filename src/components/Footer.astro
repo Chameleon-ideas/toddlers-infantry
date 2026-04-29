@@ -38,7 +38,11 @@ const currentYear = new Date().getFullYear();
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <img src={logoUrl || "/logo.png"} alt={logoAlt} class="footer-logo" />
+        <img
+          src={logoUrl || "/red-logo.svg"}
+          alt={logoAlt}
+          class="footer-logo theme-logo"
+        />
         <p>{tagline}</p>
       </div>
 
@@ -66,7 +70,7 @@ const currentYear = new Date().getFullYear();
     <div class="footer-bottom">
       <p>
         &copy; {currentYear}
-        {copyrightName}. All rights reserved. <br /> Designed and Developed by <a
+        {copyrightName}. All rights reserved. Designed and Developed by <a
           href="https://chameleon-ideas.com"
           target="_blank"
           rel="noopener noreferrer">Chameleon Ideas Inc.</a
@@ -97,7 +101,7 @@ const currentYear = new Date().getFullYear();
   }
 
   .footer-logo {
-    height: 130px;
+    height: 140px;
     width: auto;
     margin-bottom: var(--space-md);
   }
